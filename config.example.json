@@ -1,0 +1,97 @@
+{
+    "$schema": "./schemas/config.schema.json",
+    "programs": [
+        {
+            "description": "A command-line utility for retrieving files using HTTP, HTTPS and FTP protocols.",
+            "downloadInformation": {
+                "id": "DOWNLOAD_PROGRAM_IN_ZIP",
+                "url": "https://eternallybored.org/misc/wget/releases/wget-1.20.3-win64.zip",
+                "zipLocation": [
+                    "wget.exe"
+                ]
+            },
+            "name": "GNU Wget (mingw32)",
+            "outputDirectory": "${BIN_DIR}",
+            "version": "1.20.3"
+        },
+        {
+            "downloadInformation": {
+                "id": "DOWNLOAD_PROGRAM_IN_ZIP",
+                "url": "https://netcologne.dl.sourceforge.net/project/astyle/astyle/astyle%203.1/AStyle_3.1_windows.zip",
+                "zipLocation": [
+                    "AStyle",
+                    "bin",
+                    "AStyle.exe"
+                ]
+            },
+            "name": "Astyle",
+            "outputDirectory": "${BIN_DIR}",
+            "renameTo": "astyle.exe",
+            "version": "3.1"
+        },
+        {
+            "description": "cloc (Count Lines Of Code) counts, and computes differences of, comment lines, blank lines, and physical lines of source code in many programming languages.",
+            "downloadInformation": {
+                "id": "DOWNLOAD_PROGRAM_DIRECTLY",
+                "url": "https://netcologne.dl.sourceforge.net/project/cloc/cloc/v1.64/cloc-1.64.exe"
+            },
+            "name": "Cloc",
+            "outputDirectory": "${BIN_DIR}",
+            "renameTo": "cloc.exe",
+            "version": "1.64"
+        },
+        {
+            "description": "htop-like system-monitor for Windows with Vi-keybindings.",
+            "downloadInformation": {
+                "id": "DOWNLOAD_PROGRAM_DIRECTLY",
+                "url": "https://github.com/gsass1/NTop/releases/download/v0.3.4/ntop.exe"
+            },
+            "name": "NTop",
+            "outputDirectory": "${BIN_DIR}",
+            "version": "0.3.4"
+        },
+        {
+            "description": "A program to render SVG images to Cairo surfaces.",
+            "downloadInformation": {
+                "id": "DOWNLOAD_PROGRAM_IN_ZIP",
+                "url": "https://github.com/miyako/console-rsvg-convert/releases/download/2.1/x64-static.zip",
+                "zipLocation": [
+                    "x64-static",
+                    "rsvg-convert.exe"
+                ]
+            },
+            "name": "rsvg-convert",
+            "outputDirectory": "${BIN_DIR}",
+            "version": "2.1"
+        },
+        {
+            "description": "OpenCL info",
+            "downloadInformation": {
+                "id": "DOWNLOAD_PROGRAM_DIRECTLY",
+                "url": "https://ci.appveyor.com/api/projects/oblomov/clinfo/artifacts/clinfo.exe?job=platform%3a+x64"
+            },
+            "name": "clinfo",
+            "outputDirectory": "${BIN_DIR}",
+            "version": "2.2.18"
+        },
+        {
+            "description": "A command-line fuzzy finder",
+            "downloadInformation": {
+                "id": "DOWNLOAD_PROGRAM_IN_ZIP",
+                "url": "https://github.com/junegunn/fzf-bin/releases/download/0.21.1/fzf-0.21.1-windows_amd64.zip",
+                "zipLocation": [
+                    "fzf.exe"
+                ]
+            },
+            "name": "fzf",
+            "outputDirectory": "${BIN_DIR}",
+            "version": "0.21.1"
+        }
+    ],
+    "variables": [
+        {
+            "name": "BIN_DIR",
+            "value": "C:\\Users\\nikla\\programs\\bin"
+        }
+    ]
+}

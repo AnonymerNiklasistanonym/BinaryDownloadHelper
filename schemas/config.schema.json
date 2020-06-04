@@ -1,0 +1,163 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "additionalProperties": false,
+    "definitions": {
+        "downloadProgram": {
+            "additionalProperties": false,
+            "description": "Download program directly via URL",
+            "properties": {
+                "id": {
+                    "description": "Download type ID",
+                    "enum": [
+                        "DOWNLOAD_PROGRAM_DIRECTLY"
+                    ],
+                    "type": "string"
+                },
+                "url": {
+                    "description": "Download url",
+                    "type": "string"
+                },
+                "urlHistory": {
+                    "description": "Previous download urls",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "id",
+                "url"
+            ]
+        },
+        "downloadProgramInZip": {
+            "additionalProperties": false,
+            "description": "Download ZIP file via URL and then extract program",
+            "properties": {
+                "id": {
+                    "description": "Download type ID",
+                    "enum": [
+                        "DOWNLOAD_PROGRAM_IN_ZIP"
+                    ],
+                    "type": "string"
+                },
+                "url": {
+                    "description": "Download url",
+                    "type": "string"
+                },
+                "urlHistory": {
+                    "description": "Previous download urls",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "zipLocation": {
+                    "description": "Location of EXE in ZIP file",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "id",
+                "url",
+                "zipLocation"
+            ]
+        },
+        "program": {
+            "additionalProperties": false,
+            "description": "A program without an native installer",
+            "properties": {
+                "description": {
+                    "description": "Program description",
+                    "type": "string"
+                },
+                "downloadInformation": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/downloadProgram"
+                        },
+                        {
+                            "$ref": "#/definitions/downloadProgramInZip"
+                        }
+                    ],
+                    "description": "Download type of program"
+                },
+                "isDirectory": {
+                    "description": "Declaring that this program is not just an executable but a whole directory",
+                    "type": "boolean"
+                },
+                "name": {
+                    "description": "Program name",
+                    "type": "string"
+                },
+                "outputDirectory": {
+                    "description": "The directory where the program should be moved to",
+                    "type": "string"
+                },
+                "renameTo": {
+                    "description": "Name to which the extracted program/program directory should be renamed to",
+                    "type": "string"
+                },
+                "version": {
+                    "description": "Program version",
+                    "type": "string"
+                },
+                "website": {
+                    "description": "The program website",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name",
+                "downloadInformation",
+                "outputDirectory"
+            ]
+        },
+        "variable": {
+            "additionalProperties": false,
+            "description": "Variable that will be replaced by a set value using ${VARIABLE_NAME} (supported by: 'renameTo', 'outputDirectory')",
+            "properties": {
+                "name": {
+                    "description": "Name of the variable that can be reused as ${VARIABLE_NAME}",
+                    "type": "string"
+                },
+                "value": {
+                    "description": "Value of the variable",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name",
+                "value"
+            ]
+        }
+    },
+    "properties": {
+        "$schema": {
+            "description": "Pointer to the schema against which this document should be validated",
+            "title": "Schema",
+            "type": "string"
+        },
+        "programs": {
+            "description": "Programs",
+            "items": {
+                "$ref": "#/definitions/program"
+            },
+            "type": "array"
+        },
+        "variables": {
+            "description": "Variables",
+            "items": {
+                "$ref": "#/definitions/variable"
+            },
+            "type": "array"
+        }
+    },
+    "required": [
+        "programs"
+    ],
+    "type": "object"
+}
