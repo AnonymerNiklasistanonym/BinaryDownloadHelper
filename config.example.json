@@ -86,12 +86,44 @@
             "name": "fzf",
             "outputDirectory": "${BIN_DIR}",
             "version": "0.21.1"
+        },
+        {
+            "downloadInformation": {
+                "id": "DOWNLOAD_PROGRAM_IN_ZIP",
+                "url": "https://media.inkscape.org/dl/resources/file/inkscape-1.0-x64.7z",
+                "zipLocation": [
+                    "."
+                ],
+                "7zip": true
+            },
+            "isDirectory": true,
+            "name": "Inkscape",
+            "outputDirectory": "${PROGRAM_DIR}",
+            "version": "1.0"
+        },
+        {
+            "description": "PHP is a popular general-purpose scripting language that is especially suited to web development.",
+            "downloadInformation": {
+                "id": "DOWNLOAD_PROGRAM_IN_ZIP",
+                "url": "https://windows.php.net/downloads/releases/php-7.4.6-Win32-vc15-x64.zip",
+                "zipLocation": [
+                    "."
+                ]
+            },
+            "isDirectory": true,
+            "name": "PHP",
+            "outputDirectory": "${PROGRAM_DIR}/php",
+            "version": "7.4.6"
         }
     ],
     "variables": [
         {
             "name": "BIN_DIR",
             "value": "C:\\Users\\nikla\\programs\\bin"
+        },
+        {
+            "name": "PROGRAM_DIR",
+            "value": "C:\\Users\\nikla\\programs"
         }
     ]
 }

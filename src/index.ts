@@ -1,7 +1,8 @@
 import type { Config, Program, Variable } from "../schemas/config.schema";
+import { extractAllFiles, extractAllFiles7z, extractFiles } from "./unzipper";
 import { fileExists, makeArrayUnique } from "./extras";
 import { downloadFile } from "./downloader";
-import { extractFiles } from "./unzipper";
+import { fail } from "assert";
 import { promises as fs } from "fs";
 import path from "path";
 import { replaceVariables } from "./macros";
@@ -10,6 +11,8 @@ interface ProgramConfig extends Program {
     timeOfDownload: string
     variables: Variable[]
 }
+
+const undefStr = (input?: string) => input === undefined ? "undefined" : input;
 
 const detectDifferenceBetweenProgramConfigs = (
     foundConfig: ProgramConfig, latestConfig: Program, variables?: Variable[]
@@ -23,12 +26,14 @@ const detectDifferenceBetweenProgramConfigs = (
     if (foundConfig.version !== foundConfig.version) {
         differenceDetected = true;
         // eslint-disable-next-line no-console
-        console.info(`> Program version differs (${foundConfig.version} - ${latestConfig.version})`);
+        console.info(`> Program version differs (${undefStr(foundConfig.version)} - `
+            + `${undefStr(latestConfig.version)})`);
     }
     if (foundConfig.renameTo !== foundConfig.renameTo) {
         differenceDetected = true;
         // eslint-disable-next-line no-console
-        console.info(`> Program rename to differs (${foundConfig.renameTo} - ${latestConfig.renameTo})`);
+        console.info(`> Program rename to differs (${undefStr(foundConfig.renameTo)} - `
+            + `${undefStr(latestConfig.renameTo)})`);
     }
     if (foundConfig.downloadInformation.url !== foundConfig.downloadInformation.url) {
         differenceDetected = true;
@@ -62,16 +67,36 @@ const downloadProgram = async (program: Program, outputDirectory: string, progra
     const buffer = await downloadFile(program.downloadInformation.url);
     await fs.mkdir(outputDirectory, { recursive: true });
     if (program.downloadInformation.id === "DOWNLOAD_PROGRAM_IN_ZIP") {
-        const extractedFiles = await extractFiles(buffer, [
-            {
-                filePath: program.downloadInformation.zipLocation,
-                id: "program"
+        if (program.isDirectory) {
+            // let extractedFiles: ExtractedFile[] = [];
+            if (program.downloadInformation.zipLocation.includes(".")) {
+                if (program.downloadInformation["7zip"]) {
+                    await extractAllFiles7z(buffer, outputDirectory);
+                } else {
+                    await extractAllFiles(buffer, outputDirectory);
+                }
+            } else {
+                fail();
+                // if (extractedFiles.length === 0) {
+                //     throw Error(`No (${extractedFiles.length}) file was extracted from zip file`);
+                // }
+                // for (const extractedFile of extractedFiles) {
+                //     await fs.writeFile(path.join(programOutputFilePath, ... extractedFile.filePath),
+                //         extractedFile.buffer);
+                // }
             }
-        ]);
-        if (extractedFiles.length !== 1) {
-            throw Error(`More/Less than one (${extractedFiles.length}) file was extracted from zip file`);
+        } else {
+            const extractedFiles = await extractFiles(buffer, [
+                {
+                    filePath: program.downloadInformation.zipLocation,
+                    id: "program"
+                }
+            ]);
+            if (extractedFiles.length !== 1) {
+                throw Error(`More/Less than one (${extractedFiles.length}) file was extracted from zip file`);
+            }
+            await fs.writeFile(programOutputFilePath, extractedFiles[0].buffer);
         }
-        await fs.writeFile(programOutputFilePath, extractedFiles[0].buffer);
     } else if (program.downloadInformation.id === "DOWNLOAD_PROGRAM_DIRECTLY") {
         await fs.writeFile(programOutputFilePath, buffer);
     } else {

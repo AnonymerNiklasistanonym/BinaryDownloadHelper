@@ -25,7 +25,8 @@
   },
   "homepage": "https://github.com/AnonymerNiklasistanonym/WindowsNonInstallerProgramsDownloadHelper#readme",
   "dependencies": {
-    "request": "^2.88.2",
+    "got": "^11.2.0",
+    "node-7z": "^2.1.1",
     "unzipper": "^0.10.11"
   },
   "devDependencies": {

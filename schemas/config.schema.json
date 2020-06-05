@@ -58,6 +58,10 @@
                         "type": "string"
                     },
                     "type": "array"
+                },
+                "7zip": {
+                    "description": "Use 7zip for unpacking the ZIP file",
+                    "type": "boolean"
                 }
             },
             "required": [

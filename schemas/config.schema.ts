@@ -95,6 +95,10 @@ export interface DownloadProgramInZip {
      * Location of EXE in ZIP file
      */
     zipLocation: string[];
+    /**
+     * Use 7zip for unpacking the ZIP file
+     */
+    "7zip"?: boolean;
 }
 /**
  * Variable that will be replaced by a set value using ${VARIABLE_NAME} (supported by: 'renameTo', 'outputDirectory')

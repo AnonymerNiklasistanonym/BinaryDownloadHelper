@@ -1,42 +1,57 @@
+declare module "node-7z";
+
 /* eslint-disable complexity */
 import { createReadStream, createWriteStream, promises as fs } from "fs";
 import os from "os";
 import path from "path";
+import seven from "node-7z";
 import unzipper from "unzipper";
 
-
-interface ExtractFileInfo {
+export interface ExtractFileInfo {
     id: string
+    isDirectory?: boolean
     filePath: string[]
 }
 
-interface ExtractedFile {
+export interface ExtractedFile {
     id: string
     buffer: Buffer
     filePath: string[]
 }
 
-export const extractFiles = async (buffer: Buffer, filePaths: ExtractFileInfo[]): Promise<ExtractedFile[]> => {
+export interface ExtractedFileOptions {
+    filePaths?: ExtractFileInfo[]
+    allFiles?: boolean
+}
+
+export const extractFilesBase = async (buffer: Buffer, options: ExtractedFileOptions): Promise<ExtractedFile[]> => {
     const extractedFiles: ExtractedFile[] = [];
     const fileNameZip = path.join(os.tmpdir(), "temp_zip.zip");
     await fs.writeFile(fileNameZip, buffer);
     const zip = createReadStream(fileNameZip).pipe(unzipper.Parse({ forceStream: true }));
     for await (const entry of zip) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-        const fileName = entry.path;
+        const fileName: string = entry.path;
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         const type = entry.type; // 'Directory' or 'File'
 
         let foundFile = false;
         let foundFilePath: string[] = [];
         let foundId = "";
-        for (const filePath of filePaths) {
-            const generatedFilePath = filePath.filePath.join("/");
-            if (generatedFilePath === fileName) {
-                foundFile = true;
-                foundId = filePath.id;
-                foundFilePath = filePath.filePath;
-                break;
+        if (options.allFiles) {
+            foundFile = true;
+            foundFilePath = fileName.split("/");
+        } else {
+            if (options.filePaths !== undefined) {
+                for (const filePath of options.filePaths) {
+                    const generatedFilePath = filePath.filePath.join("/");
+                    if (generatedFilePath === fileName) {
+                        foundFile = true;
+                        foundId = filePath.id;
+                        foundFilePath = filePath.filePath;
+                        break;
+                    }
+                }
             }
         }
         if (!foundFile) {
@@ -71,4 +86,32 @@ export const extractFiles = async (buffer: Buffer, filePaths: ExtractFileInfo[])
         });
     }
     return extractedFiles;
+};
+
+
+export const extractAllFiles = async (buffer: Buffer, outputDirectory: string) => {
+    const fileNameZip = path.join(os.tmpdir(), "temp_zip.zip");
+    await fs.writeFile(fileNameZip, buffer);
+    createReadStream(fileNameZip)
+        .pipe(unzipper.Extract({ path: outputDirectory }));
+};
+
+export const extractAllFiles7z = async (buffer: Buffer, outputDirectory: string) => {
+    const fileNameZip = path.join(os.tmpdir(), "temp_zip.zip");
+    await fs.writeFile(fileNameZip, buffer);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+    const myStream = seven.extractFull(fileNameZip, outputDirectory);
+    return new Promise((resolve, reject) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+        myStream.on("end", () => {
+            resolve();
+        });
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+        myStream.on("error", (err: Error) => reject(err));
+    });
+};
+
+
+export const extractFiles = async (buffer: Buffer, filePaths: ExtractFileInfo[]): Promise<ExtractedFile[]> => {
+    return await extractFilesBase(buffer, { filePaths });
 };
