@@ -89,19 +89,27 @@ export const extractFilesBase = async (buffer: Buffer, options: ExtractedFileOpt
 };
 
 
-export const extractAllFiles = async (buffer: Buffer, outputDirectory: string) => {
+export const extractAllFiles = async (buffer: Buffer, outputDirectory: string, moveDir?: string) => {
     const fileNameZip = path.join(os.tmpdir(), "temp_zip.zip");
     await fs.writeFile(fileNameZip, buffer);
-    createReadStream(fileNameZip)
-        .pipe(unzipper.Extract({ path: outputDirectory }));
+    const files = unzipper.Extract({ path: outputDirectory });
+    createReadStream(fileNameZip).pipe(files);
+    await new Promise((resolve, reject) => {
+        files.on("end", () => {
+            resolve();
+        });
+    });
+    if (moveDir) {
+        // TODO
+    }
 };
 
-export const extractAllFiles7z = async (buffer: Buffer, outputDirectory: string) => {
+export const extractAllFiles7z = async (buffer: Buffer, outputDirectory: string, moveDir?: string) => {
     const fileNameZip = path.join(os.tmpdir(), "temp_zip.zip");
     await fs.writeFile(fileNameZip, buffer);
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
     const myStream = seven.extractFull(fileNameZip, outputDirectory);
-    return new Promise((resolve, reject) => {
+    await new Promise((resolve, reject) => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
         myStream.on("end", () => {
             resolve();
@@ -109,6 +117,9 @@ export const extractAllFiles7z = async (buffer: Buffer, outputDirectory: string)
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
         myStream.on("error", (err: Error) => reject(err));
     });
+    if (moveDir) {
+        // TODO
+    }
 };
 
 

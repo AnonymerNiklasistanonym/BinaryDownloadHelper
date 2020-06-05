@@ -70,10 +70,19 @@ const downloadProgram = async (program: Program, outputDirectory: string, progra
         if (program.isDirectory) {
             // let extractedFiles: ExtractedFile[] = [];
             if (program.downloadInformation.zipLocation.includes(".")) {
+                let dirMovePath;
+                if (program.downloadInformation.zipLocation.length > 1) {
+                    console.log(outputDirectory,
+                        ... program.downloadInformation.zipLocation.slice(0, -1),
+                        path.join(outputDirectory,
+                            ... program.downloadInformation.zipLocation.slice(0, -1)));
+                    dirMovePath = path.join(outputDirectory,
+                        ... program.downloadInformation.zipLocation.slice(0, -1));
+                }
                 if (program.downloadInformation["7zip"]) {
-                    await extractAllFiles7z(buffer, outputDirectory);
+                    await extractAllFiles7z(buffer, outputDirectory, dirMovePath);
                 } else {
-                    await extractAllFiles(buffer, outputDirectory);
+                    await extractAllFiles(buffer, outputDirectory, dirMovePath);
                 }
             } else {
                 fail();
@@ -144,7 +153,7 @@ const downloadProgram = async (program: Program, outputDirectory: string, progra
                 programOutputFilePath = path.join(outputDirectory, zipProgramPath);
             }
             const programConfigFilePath = path.join(
-                path.dirname(programOutputFilePath),
+                program.isDirectory ? programOutputFilePath : path.dirname(programOutputFilePath),
                 `.program_info_${path.basename(programOutputFilePath)}.json`
             );
 
