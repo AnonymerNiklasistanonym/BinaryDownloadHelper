@@ -89,16 +89,17 @@
         },
         {
             "downloadInformation": {
+                "7zip": true,
                 "id": "DOWNLOAD_PROGRAM_IN_ZIP",
                 "url": "https://media.inkscape.org/dl/resources/file/inkscape-1.0-x64.7z",
                 "zipLocation": [
+                    "inkscape",
                     "."
-                ],
-                "7zip": true
+                ]
             },
             "isDirectory": true,
             "name": "Inkscape",
-            "outputDirectory": "${PROGRAM_DIR}",
+            "outputDirectory": "${PROGRAM_DIR}\\inkscape",
             "version": "1.0"
         },
         {
@@ -112,8 +113,62 @@
             },
             "isDirectory": true,
             "name": "PHP",
-            "outputDirectory": "${PROGRAM_DIR}/php",
+            "outputDirectory": "${PROGRAM_DIR}\\php",
             "version": "7.4.6"
+        },
+        {
+            "description": "Create, edit, browse SQLite databases.",
+            "downloadInformation": {
+                "id": "DOWNLOAD_PROGRAM_IN_ZIP",
+                "url": "https://github.com/pawelsalawa/sqlitestudio/releases/download/3.2.1/SQLiteStudio-3.2.1.zip",
+                "zipLocation": [
+                    "SQLiteStudio",
+                    "."
+                ]
+            },
+            "isDirectory": true,
+            "name": "SQLiteStudio",
+            "outputDirectory": "${PROGRAM_DIR}\\sqlitestudio",
+            "version": "3.2.1"
+        },
+        {
+            "downloadInformation": {
+                "id": "DOWNLOAD_PROGRAM_IN_ZIP",
+                "url": "http://www.uderzo.it/main_products/space_sniffer/files/spacesniffer_1_3_0_2.zip",
+                "zipLocation": [
+                    "SpaceSniffer.exe"
+                ]
+            },
+            "name": "Space Sniffer",
+            "outputDirectory": "${BIN_DIR}",
+            "renameTo": "spacesniffer.exe",
+            "version": "1.3.0.2"
+        },
+        {
+            "downloadInformation": {
+                "7zip": true,
+                "id": "DOWNLOAD_PROGRAM_IN_ZIP",
+                "url": "https://netcologne.dl.sourceforge.net/project/mpv-player-windows/64bit/mpv-x86_64-20200531-git-102a083.7z",
+                "zipLocation": [
+                    "."
+                ]
+            },
+            "isDirectory": true,
+            "name": "MPV video player",
+            "outputDirectory": "${PROGRAM_DIR}\\mpv"
+        },
+        {
+            "downloadInformation": {
+                "id": "DOWNLOAD_PROGRAM_IN_ZIP",
+                "url": "http://sdi-tool.org/releases/SDI_R2000.zip",
+                "zipLocation": [
+                    "."
+                ]
+            },
+            "isDirectory": true,
+            "name": "Snappy Driver Installer",
+            "outputDirectory": "${PROGRAM_DIR}\\snappydriverinstaller",
+            "version": "2000"
         }
     ],
     "variables": [
