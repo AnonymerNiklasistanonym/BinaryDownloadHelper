@@ -1,3 +1,3 @@
-# WindowsNonInstallerProgramsDownloadHelper
+# BinaryDownloadHelper
 
-Helps to download/install programs that do not have store versions or installers
+Helps to download binary files (programs) that do not have app store versions or installers
