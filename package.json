@@ -21,9 +21,9 @@
   "author": "AnonymerNiklasistanonym",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/AnonymerNiklasistanonym/WindowsNonInstallerProgramsDownloadHelper/issues"
+    "url": "https://github.com/AnonymerNiklasistanonym/BinaryDownloadHelper/issues"
   },
-  "homepage": "https://github.com/AnonymerNiklasistanonym/WindowsNonInstallerProgramsDownloadHelper#readme",
+  "homepage": "https://github.com/AnonymerNiklasistanonym/BinaryDownloadHelper#readme",
   "dependencies": {
     "got": "^11.2.0",
     "node-7z": "^2.1.1",
