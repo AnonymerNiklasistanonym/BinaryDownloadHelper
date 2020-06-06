@@ -2,6 +2,7 @@ declare module "node-7z";
 
 /* eslint-disable complexity */
 import { createReadStream, createWriteStream, promises as fs } from "fs";
+import { moveDirectory } from "./extras";
 import os from "os";
 import path from "path";
 import seven from "node-7z";
@@ -98,9 +99,10 @@ export const extractAllFiles = async (buffer: Buffer, outputDirectory: string, m
         files.on("end", () => {
             resolve();
         });
+        files.on("error", reject);
     });
     if (moveDir) {
-        // TODO
+        await moveDirectory(moveDir, outputDirectory);
     }
 };
 
@@ -118,7 +120,7 @@ export const extractAllFiles7z = async (buffer: Buffer, outputDirectory: string,
         myStream.on("error", (err: Error) => reject(err));
     });
     if (moveDir) {
-        // TODO
+        await moveDirectory(moveDir, outputDirectory);
     }
 };
 
