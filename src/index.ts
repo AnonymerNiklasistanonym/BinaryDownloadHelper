@@ -64,49 +64,53 @@ const detectDifferenceBetweenProgramConfigs = (
 };
 
 const downloadProgram = async (program: Program, outputDirectory: string, programOutputFilePath: string) => {
-    const buffer = await downloadFile(program.downloadInformation.url);
-    await fs.rmdir(outputDirectory, { recursive: true });
-    await fs.mkdir(outputDirectory, { recursive: true });
-    if (program.downloadInformation.id === "DOWNLOAD_PROGRAM_IN_ZIP") {
-        if (program.isDirectory) {
-            // let extractedFiles: ExtractedFile[] = [];
-            if (program.downloadInformation.zipLocation.includes(".")) {
-                let dirMovePath;
-                if (program.downloadInformation.zipLocation.length > 1) {
-                    dirMovePath = path.join(outputDirectory,
-                        ... program.downloadInformation.zipLocation.slice(0, -1));
-                }
-                if (program.downloadInformation["7zip"]) {
-                    await extractAllFiles7z(buffer, outputDirectory, dirMovePath);
+    try {
+        const buffer = await downloadFile(program.downloadInformation.url);
+        await fs.rmdir(outputDirectory, { recursive: true });
+        await fs.mkdir(outputDirectory, { recursive: true });
+        if (program.downloadInformation.id === "DOWNLOAD_PROGRAM_IN_ZIP") {
+            if (program.isDirectory) {
+                // let extractedFiles: ExtractedFile[] = [];
+                if (program.downloadInformation.zipLocation.includes(".")) {
+                    let dirMovePath;
+                    if (program.downloadInformation.zipLocation.length > 1) {
+                        dirMovePath = path.join(outputDirectory,
+                            ... program.downloadInformation.zipLocation.slice(0, -1));
+                    }
+                    if (program.downloadInformation["7zip"]) {
+                        await extractAllFiles7z(buffer, outputDirectory, dirMovePath);
+                    } else {
+                        await extractAllFiles(buffer, outputDirectory, dirMovePath);
+                    }
                 } else {
-                    await extractAllFiles(buffer, outputDirectory, dirMovePath);
+                    fail();
+                    // if (extractedFiles.length === 0) {
+                    //     throw Error(`No (${extractedFiles.length}) file was extracted from zip file`);
+                    // }
+                    // for (const extractedFile of extractedFiles) {
+                    //     await fs.writeFile(path.join(programOutputFilePath, ... extractedFile.filePath),
+                    //         extractedFile.buffer);
+                    // }
                 }
             } else {
-                fail();
-                // if (extractedFiles.length === 0) {
-                //     throw Error(`No (${extractedFiles.length}) file was extracted from zip file`);
-                // }
-                // for (const extractedFile of extractedFiles) {
-                //     await fs.writeFile(path.join(programOutputFilePath, ... extractedFile.filePath),
-                //         extractedFile.buffer);
-                // }
-            }
-        } else {
-            const extractedFiles = await extractFiles(buffer, [
-                {
-                    filePath: program.downloadInformation.zipLocation,
-                    id: "program"
+                const extractedFiles = await extractFiles(buffer, [
+                    {
+                        filePath: program.downloadInformation.zipLocation,
+                        id: "program"
+                    }
+                ]);
+                if (extractedFiles.length !== 1) {
+                    throw Error(`More/Less than one (${extractedFiles.length}) file was extracted from zip file`);
                 }
-            ]);
-            if (extractedFiles.length !== 1) {
-                throw Error(`More/Less than one (${extractedFiles.length}) file was extracted from zip file`);
+                await fs.writeFile(programOutputFilePath, extractedFiles[0].buffer);
             }
-            await fs.writeFile(programOutputFilePath, extractedFiles[0].buffer);
+        } else if (program.downloadInformation.id === "DOWNLOAD_PROGRAM_DIRECTLY") {
+            await fs.writeFile(programOutputFilePath, buffer);
+        } else {
+            throw Error(`Download method is not supported: ${JSON.stringify(program.downloadInformation)}`);
         }
-    } else if (program.downloadInformation.id === "DOWNLOAD_PROGRAM_DIRECTLY") {
-        await fs.writeFile(programOutputFilePath, buffer);
-    } else {
-        throw Error(`Download method is not supported: ${JSON.stringify(program.downloadInformation)}`);
+    } catch (error) {
+        throw error;
     }
 };
 
@@ -174,18 +178,24 @@ const downloadProgram = async (program: Program, outputDirectory: string, progra
                 continue;
             }
 
-            // Download Program
-            await downloadProgram(program, outputDirectory, programOutputFilePath);
-            // eslint-disable-next-line no-console
-            console.info(`${progressString} ${infoString} was added: '${programOutputFilePath}'`);
+            try {
+                // Download Program
+                await downloadProgram(program, outputDirectory, programOutputFilePath);
+                // eslint-disable-next-line no-console
+                console.info(`${progressString} ${infoString} was added: '${programOutputFilePath}'`);
 
-            // Save program config information next to executable (directory)
-            const localProgramConfig: ProgramConfig = {
-                ... program,
-                timeOfDownload: new Date().toISOString(),
-                variables: usedVariables
-            };
-            await fs.writeFile(programConfigFilePath, JSON.stringify(localProgramConfig, null, 4));
+                // Save program config information next to executable (directory)
+                const localProgramConfig: ProgramConfig = {
+                    ... program,
+                    timeOfDownload: new Date().toISOString(),
+                    variables: usedVariables
+                };
+                await fs.writeFile(programConfigFilePath, JSON.stringify(localProgramConfig, null, 4));
+            } catch (programDownloadError) {
+                // eslint-disable-next-line no-console
+                console.info(`There was an error downloading the program ${infoString}:`);
+                console.error(programDownloadError);
+            }
         }
     } catch (error) {
         throw error;

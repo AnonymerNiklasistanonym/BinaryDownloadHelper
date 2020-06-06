@@ -24,15 +24,6 @@ const isDirectory = async (filePath: string): Promise<boolean> => {
     }
 };
 
-const isFile = async (filePath: string): Promise<boolean> => {
-    try {
-        const stat = await fs.lstat(filePath);
-        return stat.isFile();
-    } catch (error) {
-        throw error;
-    }
-};
-
 export const getFiles = async (filePath: string): Promise<string[]> => {
     try {
         if (await isDirectory(filePath)) {
@@ -56,11 +47,15 @@ export const getFiles = async (filePath: string): Promise<string[]> => {
 };
 
 export const moveDirectory = async (moveDir: string, newDir: string): Promise<void> => {
-    const moveDirFiles = await getFiles(moveDir);
-    moveDirFiles.forEach(async (file) => {
-        const newFileName = file.replace(moveDir, newDir);
-        await fs.mkdir(path.dirname(newFileName), { recursive: true });
-        await fs.rename(file, newFileName);
-    });
-    await fs.rmdir(moveDir, { recursive: true });
+    try {
+        const moveDirFiles = await getFiles(moveDir);
+        moveDirFiles.forEach(async (file) => {
+            const newFileName = file.replace(moveDir, newDir);
+            await fs.mkdir(path.dirname(newFileName), { recursive: true });
+            await fs.rename(file, newFileName);
+        });
+        await fs.rmdir(moveDir, { recursive: true });
+    } catch (error) {
+        throw error;
+    }
 };
