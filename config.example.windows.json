@@ -169,6 +169,105 @@
             "name": "Snappy Driver Installer",
             "outputDirectory": "${PROGRAM_DIR}\\snappydriverinstaller",
             "version": "2000"
+        },
+        {
+            "description": "FFmpeg is the leading multimedia framework to decode, encode, transcode, mux, demux, stream, filter and play.",
+            "downloadInformation": {
+                "id": "DOWNLOAD_PROGRAM_IN_ZIP",
+                "url": "https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-20200604-7f81785-win64-static.zip",
+                "zipLocation": [
+                    "ffmpeg-20200604-7f81785-win64-static",
+                    "."
+                ]
+            },
+            "isDirectory": true,
+            "name": "FFmpeg",
+            "outputDirectory": "${PROGRAM_DIR}\\ffmpeg",
+            "version": "20200604-7f81785"
+        },
+        {
+            "description": "A simple tool for visually comparing two PDF files (diff-pdf --output-diff=diff.pdf a.pdf b.pdf)",
+            "downloadInformation": {
+                "id": "DOWNLOAD_PROGRAM_IN_ZIP",
+                "url": "https://github.com/vslavik/diff-pdf/releases/download/v0.4.1/diff-pdf-win-0.4.1.zip",
+                "zipLocation": [
+                    "."
+                ]
+            },
+            "isDirectory": true,
+            "name": "diff-pdf",
+            "outputDirectory": "${PROGRAM_DIR}\\diff_pdf",
+            "version": "0.4.1"
+        },
+        {
+            "downloadInformation": {
+                "id": "DOWNLOAD_PROGRAM_IN_ZIP",
+                "url": "https://downloads.apache.org/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.zip",
+                "zipLocation": [
+                    "apache-maven-3.6.3",
+                    "."
+                ]
+            },
+            "isDirectory": true,
+            "name": "Apache Maven",
+            "outputDirectory": "${PROGRAM_DIR}\\apache_maven",
+            "version": "3.6.3"
+        },
+        {
+            "downloadInformation": {
+                "id": "DOWNLOAD_PROGRAM_IN_ZIP",
+                "url": "https://services.gradle.org/distributions/gradle-6.5-bin.zip",
+                "zipLocation": [
+                    "gradle-6.5",
+                    "."
+                ]
+            },
+            "isDirectory": true,
+            "name": "Gradle",
+            "outputDirectory": "${PROGRAM_DIR}\\gradle",
+            "version": "6.5"
+        },
+        {
+            "description": "Display and control your Android device ",
+            "downloadInformation": {
+                "id": "DOWNLOAD_PROGRAM_IN_ZIP",
+                "url": "https://github.com/Genymobile/scrcpy/releases/download/v1.14/scrcpy-win64-v1.14.zip",
+                "zipLocation": [
+                    "."
+                ]
+            },
+            "isDirectory": true,
+            "name": "scrcpy",
+            "outputDirectory": "${PROGRAM_DIR}\\scrcpy",
+            "version": "1.14"
+        },
+        {
+            "downloadInformation": {
+                "id": "DOWNLOAD_PROGRAM_IN_ZIP",
+                "url": "https://download.java.net/java/GA/jdk14.0.1/664493ef4a6946b186ff29eb326336a2/7/GPL/openjdk-14.0.1_windows-x64_bin.zip",
+                "zipLocation": [
+                    "jdk-14.0.1",
+                    "."
+                ]
+            },
+            "isDirectory": true,
+            "name": "JAVA JDK 14",
+            "outputDirectory": "${PROGRAM_DIR}\\java_jdk_14",
+            "version": "14.0.1"
+        },
+        {
+            "downloadInformation": {
+                "id": "DOWNLOAD_PROGRAM_IN_ZIP",
+                "url": "https://download2.gluonhq.com/openjfx/14.0.1/openjfx-14.0.1_windows-x64_bin-sdk.zip",
+                "zipLocation": [
+                    "javafx-sdk-14.0.1",
+                    "."
+                ]
+            },
+            "isDirectory": true,
+            "name": "JAVA OpenJFX SKD 14",
+            "outputDirectory": "${PROGRAM_DIR}\\java_openjfx_jdk_14",
+            "version": "14.0.1"
         }
     ],
     "variables": [
