@@ -10,6 +10,13 @@
                     "wget.exe"
                 ]
             },
+            "environmentVariables": [
+                {
+                    "append": true,
+                    "name": "PATH",
+                    "value": "${OUTPUT_DIRECTORY}"
+                }
+            ],
             "name": "GNU Wget (mingw32)",
             "outputDirectory": "${BIN_DIR}",
             "version": "1.20.3"
@@ -24,6 +31,13 @@
                     "AStyle.exe"
                 ]
             },
+            "environmentVariables": [
+                {
+                    "append": true,
+                    "name": "PATH",
+                    "value": "${OUTPUT_DIRECTORY}"
+                }
+            ],
             "name": "Astyle",
             "outputDirectory": "${BIN_DIR}",
             "renameTo": "astyle.exe",
@@ -35,6 +49,13 @@
                 "id": "DOWNLOAD_PROGRAM_DIRECTLY",
                 "url": "https://netcologne.dl.sourceforge.net/project/cloc/cloc/v1.64/cloc-1.64.exe"
             },
+            "environmentVariables": [
+                {
+                    "append": true,
+                    "name": "PATH",
+                    "value": "${OUTPUT_DIRECTORY}"
+                }
+            ],
             "name": "Cloc",
             "outputDirectory": "${BIN_DIR}",
             "renameTo": "cloc.exe",
@@ -46,6 +67,13 @@
                 "id": "DOWNLOAD_PROGRAM_DIRECTLY",
                 "url": "https://github.com/gsass1/NTop/releases/download/v0.3.4/ntop.exe"
             },
+            "environmentVariables": [
+                {
+                    "append": true,
+                    "name": "PATH",
+                    "value": "${OUTPUT_DIRECTORY}"
+                }
+            ],
             "name": "NTop",
             "outputDirectory": "${BIN_DIR}",
             "version": "0.3.4"
@@ -60,6 +88,13 @@
                     "rsvg-convert.exe"
                 ]
             },
+            "environmentVariables": [
+                {
+                    "append": true,
+                    "name": "PATH",
+                    "value": "${OUTPUT_DIRECTORY}"
+                }
+            ],
             "name": "rsvg-convert",
             "outputDirectory": "${BIN_DIR}",
             "version": "2.1"
@@ -70,6 +105,13 @@
                 "id": "DOWNLOAD_PROGRAM_DIRECTLY",
                 "url": "https://ci.appveyor.com/api/projects/oblomov/clinfo/artifacts/clinfo.exe?job=platform%3a+x64"
             },
+            "environmentVariables": [
+                {
+                    "append": true,
+                    "name": "PATH",
+                    "value": "${OUTPUT_DIRECTORY}"
+                }
+            ],
             "name": "clinfo",
             "outputDirectory": "${BIN_DIR}",
             "version": "2.2.18"
@@ -83,11 +125,19 @@
                     "fzf.exe"
                 ]
             },
+            "environmentVariables": [
+                {
+                    "append": true,
+                    "name": "PATH",
+                    "value": "${OUTPUT_DIRECTORY}"
+                }
+            ],
             "name": "fzf",
             "outputDirectory": "${BIN_DIR}",
             "version": "0.21.1"
         },
         {
+            "archived": true,
             "downloadInformation": {
                 "7zip": true,
                 "id": "DOWNLOAD_PROGRAM_IN_ZIP",
@@ -97,6 +147,13 @@
                     "."
                 ]
             },
+            "environmentVariables": [
+                {
+                    "append": true,
+                    "name": "PATH",
+                    "value": "${OUTPUT_DIRECTORY}\\bin"
+                }
+            ],
             "isDirectory": true,
             "name": "Inkscape",
             "outputDirectory": "${PROGRAM_DIR}\\inkscape",
@@ -111,6 +168,13 @@
                     "."
                 ]
             },
+            "environmentVariables": [
+                {
+                    "append": true,
+                    "name": "PATH",
+                    "value": "${OUTPUT_DIRECTORY}"
+                }
+            ],
             "isDirectory": true,
             "name": "PHP",
             "outputDirectory": "${PROGRAM_DIR}\\php",
@@ -153,6 +217,13 @@
                     "."
                 ]
             },
+            "environmentVariables": [
+                {
+                    "append": true,
+                    "name": "PATH",
+                    "value": "${OUTPUT_DIRECTORY}"
+                }
+            ],
             "isDirectory": true,
             "name": "MPV video player",
             "outputDirectory": "${PROGRAM_DIR}\\mpv"
@@ -180,6 +251,13 @@
                     "."
                 ]
             },
+            "environmentVariables": [
+                {
+                    "append": true,
+                    "name": "PATH",
+                    "value": "${OUTPUT_DIRECTORY}\\bin"
+                }
+            ],
             "isDirectory": true,
             "name": "FFmpeg",
             "outputDirectory": "${PROGRAM_DIR}\\ffmpeg",
@@ -194,6 +272,13 @@
                     "."
                 ]
             },
+            "environmentVariables": [
+                {
+                    "append": true,
+                    "name": "PATH",
+                    "value": "${OUTPUT_DIRECTORY}"
+                }
+            ],
             "isDirectory": true,
             "name": "diff-pdf",
             "outputDirectory": "${PROGRAM_DIR}\\diff_pdf",
@@ -208,6 +293,13 @@
                     "."
                 ]
             },
+            "environmentVariables": [
+                {
+                    "append": true,
+                    "name": "PATH",
+                    "value": "${OUTPUT_DIRECTORY}\\bin"
+                }
+            ],
             "isDirectory": true,
             "name": "Apache Maven",
             "outputDirectory": "${PROGRAM_DIR}\\apache_maven",
@@ -222,6 +314,14 @@
                     "."
                 ]
             },
+            "environmentVariables": [
+                {
+                    "append": true,
+                    "name": "PATH",
+                    "value": "${OUTPUT_DIRECTORY}\\bin"
+                }
+            ],
+            "renameTo": "",
             "isDirectory": true,
             "name": "Gradle",
             "outputDirectory": "${PROGRAM_DIR}\\gradle",
@@ -236,6 +336,13 @@
                     "."
                 ]
             },
+            "environmentVariables": [
+                {
+                    "append": true,
+                    "name": "PATH",
+                    "value": "${OUTPUT_DIRECTORY}"
+                }
+            ],
             "isDirectory": true,
             "name": "scrcpy",
             "outputDirectory": "${PROGRAM_DIR}\\scrcpy",
@@ -250,6 +357,18 @@
                     "."
                 ]
             },
+            "environmentVariables": [
+                {
+                    "name": "JAVA_HOME",
+                    "system": true,
+                    "value": "${OUTPUT_DIRECTORY}\\bin"
+                },
+                {
+                    "append": true,
+                    "name": "PATH",
+                    "value": "%JAVA_HOME%\\bin"
+                }
+            ],
             "isDirectory": true,
             "name": "JAVA JDK 14",
             "outputDirectory": "${PROGRAM_DIR}\\java_jdk_14",
