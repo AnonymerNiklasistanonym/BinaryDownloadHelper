@@ -12,37 +12,95 @@ interface ProgramConfig extends Program {
     variables: Variable[]
 }
 
-const undefStr = (input?: string) => input === undefined ? "undefined" : input;
+const undefStr = (input?: string|boolean) => input === undefined ? "undefined" : String(input);
 
+interface DifferenceInfo {
+    programDifference: boolean
+    configDifference: boolean
+    environmentVarDifference: boolean
+}
+
+// eslint-disable-next-line complexity
 const detectDifferenceBetweenProgramConfigs = (
     foundConfig: ProgramConfig, latestConfig: Program, variables?: Variable[]
-): boolean => {
-    let differenceDetected = false;
+): DifferenceInfo => {
+    const differenceInfo: DifferenceInfo = {
+        configDifference: false,
+        environmentVarDifference: false,
+        programDifference: false
+    };
+
+    if (JSON.stringify(foundConfig.environmentVariables) !== JSON.stringify(latestConfig.environmentVariables)) {
+        differenceInfo.configDifference = true;
+        differenceInfo.environmentVarDifference = true;
+        // TODO: Variables
+        // eslint-disable-next-line no-console
+        console.info(`> Program environment variables differ (${JSON.stringify(foundConfig.environmentVariables)} - `
+            + `${JSON.stringify(latestConfig.environmentVariables)})`);
+    }
+    if (foundConfig.description !== latestConfig.description) {
+        differenceInfo.configDifference = true;
+        // eslint-disable-next-line no-console
+        console.info(`> Program description differs (${undefStr(foundConfig.description)} - `
+            + `${undefStr(latestConfig.description)})`);
+    }
     if (foundConfig.name !== latestConfig.name) {
-        differenceDetected = true;
+        differenceInfo.configDifference = true;
         // eslint-disable-next-line no-console
         console.info(`> Program name differs (${foundConfig.name} - ${latestConfig.name})`);
     }
-    if (foundConfig.version !== foundConfig.version) {
-        differenceDetected = true;
+    if (foundConfig.website !== latestConfig.website) {
+        differenceInfo.configDifference = true;
         // eslint-disable-next-line no-console
-        console.info(`> Program version differs (${undefStr(foundConfig.version)} - `
-            + `${undefStr(latestConfig.version)})`);
+        console.info(`> Program website differs (${undefStr(foundConfig.website)} - `
+            + `${undefStr(latestConfig.website)})`);
+    }
+
+    if (foundConfig.version !== latestConfig.version) {
+        differenceInfo.configDifference = true;
+        differenceInfo.programDifference = true;
+        // eslint-disable-next-line no-console
+        console.info(`> Program name differs (${undefStr(foundConfig.version)} - ${undefStr(latestConfig.version)})`);
+    }
+    if (foundConfig.archived !== latestConfig.archived) {
+        differenceInfo.configDifference = true;
+        differenceInfo.programDifference = true;
+        // eslint-disable-next-line no-console
+        console.info(`> Program archived state differs (${undefStr(foundConfig.archived)} - `
+            + `${undefStr(latestConfig.archived)})`);
     }
     if (foundConfig.renameTo !== foundConfig.renameTo) {
-        differenceDetected = true;
+        differenceInfo.configDifference = true;
+        differenceInfo.programDifference = true;
+        // TODO: Variables
         // eslint-disable-next-line no-console
         console.info(`> Program rename to differs (${undefStr(foundConfig.renameTo)} - `
             + `${undefStr(latestConfig.renameTo)})`);
     }
+    if (foundConfig.isDirectory !== foundConfig.isDirectory) {
+        differenceInfo.configDifference = true;
+        differenceInfo.programDifference = true;
+        // eslint-disable-next-line no-console
+        console.info(`> Program directory state differs (${undefStr(foundConfig.isDirectory)} - `
+            + `${undefStr(latestConfig.isDirectory)})`);
+    }
+    if (foundConfig.outputDirectory !== latestConfig.outputDirectory) {
+        differenceInfo.configDifference = true;
+        differenceInfo.programDifference = true;
+        // TODO: Variables
+        // eslint-disable-next-line no-console
+        console.info(`> Program name differs (${foundConfig.outputDirectory} - ${latestConfig.outputDirectory})`);
+    }
+
     if (foundConfig.downloadInformation.url !== foundConfig.downloadInformation.url) {
-        differenceDetected = true;
+        differenceInfo.configDifference = true;
+        differenceInfo.programDifference = true;
         // eslint-disable-next-line no-console
         console.info(`> Program download information url differs (${foundConfig.downloadInformation.url} - `
         + `${latestConfig.downloadInformation.url})`);
     }
     if (foundConfig.downloadInformation.id !== latestConfig.downloadInformation.id) {
-        differenceDetected = true;
+        differenceInfo.configDifference = true;
         // eslint-disable-next-line no-console
         console.info(`> Program download information id differs (${foundConfig.downloadInformation.id} - `
         + `${latestConfig.downloadInformation.id})`);
@@ -53,14 +111,51 @@ const detectDifferenceBetweenProgramConfigs = (
             foundConfig.downloadInformation.zipLocation.join("") !==
             latestConfig.downloadInformation.zipLocation.join("")
         ) {
-            differenceDetected = true;
+            differenceInfo.configDifference = true;
+            differenceInfo.programDifference = true;
             // eslint-disable-next-line no-console
             console.info("Program download information zip location differs ("
             + `[${foundConfig.downloadInformation.zipLocation.join(", ")}] - `
             + `[${latestConfig.downloadInformation.zipLocation.join(", ")}])`);
         }
+        if (
+            foundConfig.downloadInformation.id === "DOWNLOAD_PROGRAM_IN_ZIP" &&
+            latestConfig.downloadInformation.id === "DOWNLOAD_PROGRAM_IN_ZIP" &&
+            foundConfig.downloadInformation["7zip"] !== latestConfig.downloadInformation["7zip"]
+        ) {
+            differenceInfo.configDifference = true;
+            differenceInfo.programDifference = true;
+            // eslint-disable-next-line no-console
+            console.info("Program download information 7zip option differs ("
+            + `${undefStr(foundConfig.downloadInformation["7zip"])} - `
+            + `${undefStr(latestConfig.downloadInformation["7zip"])})`);
+        }
+        if (
+            foundConfig.downloadInformation.id === "DOWNLOAD_PROGRAM_IN_ZIP" &&
+            latestConfig.downloadInformation.id === "DOWNLOAD_PROGRAM_IN_ZIP" &&
+            JSON.stringify(foundConfig.downloadInformation.urlHistory) !==
+            JSON.stringify(latestConfig.downloadInformation.urlHistory)
+        ) {
+            differenceInfo.configDifference = true;
+            // eslint-disable-next-line no-console
+            console.info("Program download information url history differs ("
+            + `${JSON.stringify(foundConfig.downloadInformation.urlHistory)} - `
+            + `${JSON.stringify(latestConfig.downloadInformation.urlHistory)})`);
+        }
     }
-    return differenceDetected;
+
+    for (const variable of foundConfig.variables) {
+        if (variables?.find(a => a.name === variable.name)?.value !== variable.value) {
+            differenceInfo.configDifference = true;
+            // For now also re download in case the variable is connected to rename to or output directory / etc.
+            differenceInfo.programDifference = true;
+            // eslint-disable-next-line no-console
+            console.info("Variables differ ("
+            + `${JSON.stringify(variable)} - `
+            + `${JSON.stringify(variables?.find(a => a.name === variable.name))})`);
+        }
+    }
+    return differenceInfo;
 };
 
 const downloadProgram = async (program: Program, outputDirectory: string, programOutputFilePath: string) => {
@@ -206,8 +301,14 @@ const mergeEnvironmentVariables = (envVariables: EnvironmentVariable[]): EnvVari
             if (await fileExists(programConfigFilePath)) {
                 const existingConfigFileContent = await fs.readFile(programConfigFilePath);
                 const existingConfigData = JSON.parse(existingConfigFileContent.toString()) as ProgramConfig;
-                if (!detectDifferenceBetweenProgramConfigs(existingConfigData, program, configData.variables)) {
+                const difference = detectDifferenceBetweenProgramConfigs(existingConfigData, program,
+                    configData.variables);
+                if (!difference.programDifference) {
                     skipProgram = true;
+                    if (!difference.configDifference) {
+                        console.info(`${progressString} ${infoString} was skipped: No difference detected`);
+                        continue;
+                    }
                 }
             }
             if (!await fileExists(programOutputFilePath)) {
@@ -215,17 +316,17 @@ const mergeEnvironmentVariables = (envVariables: EnvironmentVariable[]): EnvVari
                 // eslint-disable-next-line no-console
                 console.info(`Program output path file was not found (${programOutputFilePath})`);
             }
-            if (skipProgram) {
-                // eslint-disable-next-line no-console
-                console.info(`${progressString} ${infoString} was skipped: No difference detected`);
-                continue;
-            }
 
             try {
-                // Download Program
-                await downloadProgram(program, outputDirectory, programOutputFilePath);
-                // eslint-disable-next-line no-console
-                console.info(`${progressString} ${infoString} was added: '${programOutputFilePath}'`);
+                if (skipProgram) {
+                    // eslint-disable-next-line no-console
+                    console.info(`${progressString} ${infoString} update was skipped: Only config difference detected`);
+                } else {
+                    // Download Program
+                    await downloadProgram(program, outputDirectory, programOutputFilePath);
+                    // eslint-disable-next-line no-console
+                    console.info(`${progressString} ${infoString} was added: '${programOutputFilePath}'`);
+                }
 
                 // Check for environment variables that need to be set
                 if (program.environmentVariables) {
