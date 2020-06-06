@@ -26,6 +26,10 @@ export interface Config {
  */
 export interface Program {
     /**
+     * Declare program as archived and thus don't download it
+     */
+    archived?: boolean;
+    /**
      * Program description
      */
     description?: string;
@@ -33,6 +37,10 @@ export interface Program {
      * Download type of program
      */
     downloadInformation: DownloadProgram | DownloadProgramInZip;
+    /**
+     * Environment variables based on this program location ('${OUTPUT_DIRECTORY}')
+     */
+    environmentVariables?: EnvironmentVariable[];
     /**
      * Declaring that this program is not just an executable but a whole directory
      */
@@ -80,6 +88,10 @@ export interface DownloadProgram {
  */
 export interface DownloadProgramInZip {
     /**
+     * Use 7zip for unpacking the ZIP file
+     */
+    "7zip"?: boolean;
+    /**
      * Download type ID
      */
     id: "DOWNLOAD_PROGRAM_IN_ZIP";
@@ -95,10 +107,27 @@ export interface DownloadProgramInZip {
      * Location of EXE in ZIP file
      */
     zipLocation: string[];
+}
+/**
+ * System environment variable
+ */
+export interface EnvironmentVariable {
     /**
-     * Use 7zip for unpacking the ZIP file
+     * Should the value appended if a variable with this name already exists
      */
-    "7zip"?: boolean;
+    append?: boolean;
+    /**
+     * Name of the system environment variable
+     */
+    name: string;
+    /**
+     * Should the system environment variable be created not on the user side but the system side
+     */
+    system?: boolean;
+    /**
+     * Value of the system environment variable
+     */
+    value: string;
 }
 /**
  * Variable that will be replaced by a set value using ${VARIABLE_NAME} (supported by: 'renameTo', 'outputDirectory')

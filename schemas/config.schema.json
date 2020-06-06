@@ -7,6 +7,7 @@
             "description": "Download program directly via URL",
             "properties": {
                 "id": {
+                    "default": "DOWNLOAD_PROGRAM_DIRECTLY",
                     "description": "Download type ID",
                     "enum": [
                         "DOWNLOAD_PROGRAM_DIRECTLY"
@@ -14,6 +15,7 @@
                     "type": "string"
                 },
                 "url": {
+                    "default": "https://",
                     "description": "Download url",
                     "type": "string"
                 },
@@ -34,7 +36,13 @@
             "additionalProperties": false,
             "description": "Download ZIP file via URL and then extract program",
             "properties": {
+                "7zip": {
+                    "default": false,
+                    "description": "Use 7zip for unpacking the ZIP file",
+                    "type": "boolean"
+                },
                 "id": {
+                    "default": "DOWNLOAD_PROGRAM_IN_ZIP",
                     "description": "Download type ID",
                     "enum": [
                         "DOWNLOAD_PROGRAM_IN_ZIP"
@@ -42,6 +50,7 @@
                     "type": "string"
                 },
                 "url": {
+                    "default": "https://",
                     "description": "Download url",
                     "type": "string"
                 },
@@ -58,10 +67,6 @@
                         "type": "string"
                     },
                     "type": "array"
-                },
-                "7zip": {
-                    "description": "Use 7zip for unpacking the ZIP file",
-                    "type": "boolean"
                 }
             },
             "required": [
@@ -70,10 +75,45 @@
                 "zipLocation"
             ]
         },
+        "environmentVariable": {
+            "additionalProperties": false,
+            "description": "System environment variable",
+            "properties": {
+                "append": {
+                    "default": false,
+                    "description": "Should the value appended if a variable with this name already exists",
+                    "type": "boolean"
+                },
+                "name": {
+                    "default": "JAVA_HOME",
+                    "description": "Name of the system environment variable",
+                    "type": "string"
+                },
+                "system": {
+                    "default": false,
+                    "description": "Should the system environment variable be created not on the user side but the system side",
+                    "type": "boolean"
+                },
+                "value": {
+                    "default": "${OUTPUT_DIRECTORY}\\bin",
+                    "description": "Value of the system environment variable",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name",
+                "value"
+            ]
+        },
         "program": {
             "additionalProperties": false,
             "description": "A program without an native installer",
             "properties": {
+                "archived": {
+                    "default": false,
+                    "description": "Declare program as archived and thus don't download it",
+                    "type": "boolean"
+                },
                 "description": {
                     "description": "Program description",
                     "type": "string"
@@ -89,7 +129,15 @@
                     ],
                     "description": "Download type of program"
                 },
+                "environmentVariables": {
+                    "description": "Environment variables based on this program location ('${OUTPUT_DIRECTORY}')",
+                    "items": {
+                        "$ref": "#/definitions/environmentVariable"
+                    },
+                    "type": "array"
+                },
                 "isDirectory": {
+                    "default": false,
                     "description": "Declaring that this program is not just an executable but a whole directory",
                     "type": "boolean"
                 },
@@ -110,6 +158,7 @@
                     "type": "string"
                 },
                 "website": {
+                    "default": "https://",
                     "description": "The program website",
                     "type": "string"
                 }
@@ -125,10 +174,12 @@
             "description": "Variable that will be replaced by a set value using ${VARIABLE_NAME} (supported by: 'renameTo', 'outputDirectory')",
             "properties": {
                 "name": {
+                    "default": "VARIABLE_NAME",
                     "description": "Name of the variable that can be reused as ${VARIABLE_NAME}",
                     "type": "string"
                 },
                 "value": {
+                    "default": "path/to/somewhere",
                     "description": "Value of the variable",
                     "type": "string"
                 }

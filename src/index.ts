@@ -1,4 +1,4 @@
-import type { Config, Program, Variable } from "../schemas/config.schema";
+import type { Config, Program, Variable, EnvironmentVariable } from "../schemas/config.schema";
 import { extractAllFiles, extractAllFiles7z, extractFiles } from "./unzipper";
 import { fileExists, makeArrayUnique } from "./extras";
 import { downloadFile } from "./downloader";
@@ -66,7 +66,9 @@ const detectDifferenceBetweenProgramConfigs = (
 const downloadProgram = async (program: Program, outputDirectory: string, programOutputFilePath: string) => {
     try {
         const buffer = await downloadFile(program.downloadInformation.url);
-        await fs.rmdir(outputDirectory, { recursive: true });
+        if (program.isDirectory) {
+            await fs.rmdir(outputDirectory, { recursive: true });
+        }
         await fs.mkdir(outputDirectory, { recursive: true });
         if (program.downloadInformation.id === "DOWNLOAD_PROGRAM_IN_ZIP") {
             if (program.isDirectory) {
@@ -114,12 +116,48 @@ const downloadProgram = async (program: Program, outputDirectory: string, progra
     }
 };
 
+interface EnvVariablesToAdd {
+    name: string
+    system?: boolean
+    append?: boolean
+    value: string|string[]
+}
+
+const mergeEnvironmentVariables = (envVariables: EnvironmentVariable[]): EnvVariablesToAdd[] => {
+    const finalVariables: EnvVariablesToAdd[] = [];
+    for (const envVariable of envVariables) {
+        let found = false;
+        // eslint-disable-next-line @typescript-eslint/prefer-for-of
+        for (let index = 0; index < finalVariables.length; index++) {
+            if (finalVariables[index].name === envVariable.name) {
+                const appendSituationSame = (finalVariables[index].append === envVariable.append);
+                const systemSituationSame = (finalVariables[index].system === envVariable.system);
+                // Can be merged
+                if (envVariable.append && appendSituationSame && systemSituationSame) {
+                    finalVariables[index].value = makeArrayUnique(
+                        [envVariable.value].concat(finalVariables[index].value),
+                        a => a
+                    );
+                    found = true;
+                    break;
+                }
+            }
+        }
+        if (!found) {
+            finalVariables.push(envVariable);
+        }
+    }
+    return finalVariables;
+};
+
 // eslint-disable-next-line complexity
 (async (): Promise<void> => {
     try {
         // Read config data
         const configFileContent = await fs.readFile(path.join(__dirname, "..", "..", "config.json"));
         const configData = JSON.parse(configFileContent.toString()) as Config;
+
+        const environmentVariablesToAdd: EnvironmentVariable[] = [];
 
         // Do the following for each program in the configuration
         let progressCounter = 0;
@@ -159,6 +197,11 @@ const downloadProgram = async (program: Program, outputDirectory: string, progra
             );
 
             // Check if the program download can be skipped
+            if (program.archived) {
+                // eslint-disable-next-line no-console
+                console.info(`${progressString} ${infoString} was skipped because it's archived`);
+                continue;
+            }
             let skipProgram = false;
             if (await fileExists(programConfigFilePath)) {
                 const existingConfigFileContent = await fs.readFile(programConfigFilePath);
@@ -184,11 +227,31 @@ const downloadProgram = async (program: Program, outputDirectory: string, progra
                 // eslint-disable-next-line no-console
                 console.info(`${progressString} ${infoString} was added: '${programOutputFilePath}'`);
 
+                // Check for environment variables that need to be set
+                if (program.environmentVariables) {
+                    const variables: Variable[] = [{
+                        name: "OUTPUT_DIRECTORY",
+                        value: program.isDirectory ? programOutputFilePath : path.dirname(programOutputFilePath)
+                    }];
+                    if (configData.variables) {
+                        variables.push(... configData.variables);
+                    }
+                    environmentVariablesToAdd.push(... program.environmentVariables.map(variable => {
+                        // If no copy is done the original array value is manipulated
+                        const variableObjectCopy = Object.assign({}, variable);
+                        const processed = replaceVariables(variableObjectCopy.value, variables);
+                        variableObjectCopy.value = processed.processedString;
+                        usedVariables.push(... processed.usedVariables
+                            .filter(usedVariable => usedVariable.name !== "OUTPUT_DIRECTORY"));
+                        return variableObjectCopy;
+                    }));
+                }
+
                 // Save program config information next to executable (directory)
                 const localProgramConfig: ProgramConfig = {
                     ... program,
                     timeOfDownload: new Date().toISOString(),
-                    variables: usedVariables
+                    variables: makeArrayUnique(usedVariables, a => a.name + a.value)
                 };
                 await fs.writeFile(programConfigFilePath, JSON.stringify(localProgramConfig, null, 4));
             } catch (programDownloadError) {
@@ -196,6 +259,13 @@ const downloadProgram = async (program: Program, outputDirectory: string, progra
                 console.info(`There was an error downloading the program ${infoString}:`);
                 console.error(programDownloadError);
             }
+        }
+        const newEnvironmentVariables = mergeEnvironmentVariables(environmentVariablesToAdd);
+        if (newEnvironmentVariables.length > 0) {
+            // eslint-disable-next-line no-console
+            console.info("Environment variables to add:");
+            // eslint-disable-next-line no-console
+            newEnvironmentVariables.forEach(a => console.info(a));
         }
     } catch (error) {
         throw error;
