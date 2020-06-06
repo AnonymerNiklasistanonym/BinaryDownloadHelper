@@ -55,30 +55,8 @@ export const getFiles = async (filePath: string): Promise<string[]> => {
     }
 };
 
-export const getDirectories = async (filePath: string): Promise<string[]> => {
-    try {
-        if (await isDirectory(filePath)) {
-            let filesInDir = await fs.readdir(filePath);
-            filesInDir = filesInDir.map(name => path.join(filePath, name));
-            const dirs: string[] = [];
-            for (const file of filesInDir) {
-                if (await isDirectory(file)) {
-                    dirs.push(file);
-                    dirs.push(... await getDirectories(file));
-                }
-            }
-            return dirs;
-        } else {
-            return [];
-        }
-    } catch (error) {
-        throw error;
-    }
-};
-
-export const moveDirectory = async (moveDir: string, newDir: string) => {
+export const moveDirectory = async (moveDir: string, newDir: string): Promise<void> => {
     const moveDirFiles = await getFiles(moveDir);
-    const dirsToRemove = [ moveDir, ... await getDirectories(moveDir) ];
     moveDirFiles.forEach(async (file) => {
         const newFileName = file.replace(moveDir, newDir);
         await fs.mkdir(path.dirname(newFileName), { recursive: true });

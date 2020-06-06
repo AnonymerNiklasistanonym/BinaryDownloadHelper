@@ -93,14 +93,8 @@ export const extractFilesBase = async (buffer: Buffer, options: ExtractedFileOpt
 export const extractAllFiles = async (buffer: Buffer, outputDirectory: string, moveDir?: string) => {
     const fileNameZip = path.join(os.tmpdir(), "temp_zip.zip");
     await fs.writeFile(fileNameZip, buffer);
-    const files = unzipper.Extract({ path: outputDirectory });
-    createReadStream(fileNameZip).pipe(files);
-    await new Promise((resolve, reject) => {
-        files.on("end", () => {
-            resolve();
-        });
-        files.on("error", reject);
-    });
+    await unzipper.Open.file(fileNameZip)
+        .then(d => d.extract({ concurrency: 2, path: outputDirectory }));
     if (moveDir) {
         await moveDirectory(moveDir, outputDirectory);
     }
