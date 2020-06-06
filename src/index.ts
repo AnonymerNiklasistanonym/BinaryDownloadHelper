@@ -1,4 +1,4 @@
-import type { Config, Program, Variable, EnvironmentVariable } from "../schemas/config.schema";
+import type { Config, EnvironmentVariable, Program, Variable } from "../schemas/config.schema";
 import { extractAllFiles, extractAllFiles7z, extractFiles } from "./unzipper";
 import { fileExists, makeArrayUnique } from "./extras";
 import { downloadFile } from "./downloader";
@@ -249,7 +249,12 @@ const mergeEnvironmentVariables = (envVariables: EnvironmentVariable[]): EnvVari
 (async (): Promise<void> => {
     try {
         // Read config data
-        const configFileContent = await fs.readFile(path.join(__dirname, "..", "..", "config.json"));
+        const configFilePath = path.join(__dirname, "..", "..", "config.json");
+        if (!await fileExists(configFilePath)) {
+            console.warn(`Error: No configuration file was found (${configFilePath})`);
+            process.exit(1);
+        }
+        const configFileContent = await fs.readFile(configFilePath);
         const configData = JSON.parse(configFileContent.toString()) as Config;
 
         const environmentVariablesToAdd: EnvironmentVariable[] = [];
@@ -306,6 +311,7 @@ const mergeEnvironmentVariables = (envVariables: EnvironmentVariable[]): EnvVari
                 if (!difference.programDifference) {
                     skipProgram = true;
                     if (!difference.configDifference) {
+                        // eslint-disable-next-line no-console
                         console.info(`${progressString} ${infoString} was skipped: No difference detected`);
                         continue;
                     }

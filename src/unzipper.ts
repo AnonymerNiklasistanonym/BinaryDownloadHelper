@@ -95,7 +95,9 @@ export const extractFilesBase = async (buffer: Buffer, options: ExtractedFileOpt
 };
 
 
-export const extractAllFiles = async (buffer: Buffer, outputDirectory: string, moveDir?: string) => {
+export const extractAllFiles = async (
+    buffer: Buffer, outputDirectory: string, moveDir?: string
+): Promise<void> => {
     const fileNameZip = path.join(os.tmpdir(), "temp_zip.zip");
     try {
         await fs.writeFile(fileNameZip, buffer);
@@ -109,7 +111,9 @@ export const extractAllFiles = async (buffer: Buffer, outputDirectory: string, m
     }
 };
 
-export const extractAllFiles7z = async (buffer: Buffer, outputDirectory: string, moveDir?: string) => {
+export const extractAllFiles7z = async (
+    buffer: Buffer, outputDirectory: string, moveDir?: string
+): Promise<void> => {
     try {
         const fileNameZip = path.join(os.tmpdir(), "temp_zip.zip");
         await fs.writeFile(fileNameZip, buffer);
