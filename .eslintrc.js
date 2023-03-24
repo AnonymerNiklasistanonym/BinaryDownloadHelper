@@ -96,7 +96,7 @@ module.exports = {
         "radix": "error",
         "rest-spread-spacing": [ "error", "always" ],
         "semi": "off",
-        "sort-imports": [ "error", { ignoreCase: true } ],
+        "sort-imports": [ "error", { ignoreCase: true, allowSeparatedGroups: true } ],
         "sort-keys": "error",
         "space-before-blocks": [ "error", "always" ],
         "space-before-function-paren": [ "error", "always" ],

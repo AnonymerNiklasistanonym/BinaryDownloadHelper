@@ -66,7 +66,7 @@ export const extractFilesBase = async (buffer: Buffer, options: ExtractedFileOpt
             const tempFile = createWriteStream(tempFileName);
             // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
             entry.pipe(tempFile);
-            await new Promise((resolve, reject) => {
+            await new Promise<void>((resolve, reject) => {
                 tempFile.on("finish", async () => {
                     tempFile.close();
                     try {
@@ -119,7 +119,7 @@ export const extractAllFiles7z = async (
         await fs.writeFile(fileNameZip, buffer);
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         const myStream = seven.extractFull(fileNameZip, outputDirectory);
-        await new Promise((resolve, reject) => {
+        await new Promise<void>((resolve, reject) => {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
             myStream.on("end", () => {
                 resolve();

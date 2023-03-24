@@ -1,10 +1,13 @@
+// Type imports
 import type { Config, EnvironmentVariable, Program, Variable } from "../schemas/config.schema";
-import { extractAllFiles, extractAllFiles7z, extractFiles } from "./unzipper";
-import { fileExists, makeArrayUnique } from "./extras";
-import { downloadFile } from "./downloader";
+// Package imports
 import { fail } from "assert";
 import { promises as fs } from "fs";
 import path from "path";
+// Local imports
+import { extractAllFiles, extractAllFiles7z, extractFiles } from "./unzipper";
+import { fileExists, makeArrayUnique } from "./extras";
+import { downloadFile } from "./downloader";
 import { replaceVariables } from "./macros";
 
 interface ProgramConfig extends Program {

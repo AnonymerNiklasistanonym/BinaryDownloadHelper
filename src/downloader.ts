@@ -1,12 +1,12 @@
 import { createWriteStream, promises as fs } from "fs";
-import got from "got";
 import os from "os";
 import path from "path";
 
-export const downloadFile = async (url: string): Promise<Buffer> => new Promise((resolve, reject) => {
+export const downloadFile = async (url: string): Promise<Buffer> => new Promise(async (resolve, reject) => {
     const fileName = path.join(os.tmpdir(), "temp_download");
     const file = createWriteStream(fileName);
-    got.stream(url).pipe(file);
+    const gotModule = await import("got")
+    gotModule.got.stream(url).pipe(file);
 
     // Check if file download is finished
     file.on("finish", async () => {
