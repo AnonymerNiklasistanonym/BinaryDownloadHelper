@@ -5,7 +5,7 @@
             "description": "A command-line utility for retrieving files using HTTP, HTTPS and FTP protocols.",
             "downloadInformation": {
                 "id": "DOWNLOAD_PROGRAM_IN_ZIP",
-                "url": "https://eternallybored.org/misc/wget/releases/wget-1.20.3-win64.zip",
+                "url": "https://eternallybored.org/misc/wget/releases/wget-${VERSION}-win64.zip",
                 "zipLocation": [
                     "wget.exe"
                 ]
@@ -17,14 +17,15 @@
                     "value": "${OUTPUT_DIRECTORY}"
                 }
             ],
-            "name": "GNU Wget (mingw32)",
+            "name": "wget",
+            "displayName": "GNU Wget (mingw32)",
             "outputDirectory": "${BIN_DIR}",
-            "version": "1.20.3"
+            "version": "1.21.3"
         },
         {
             "downloadInformation": {
                 "id": "DOWNLOAD_PROGRAM_IN_ZIP",
-                "url": "https://netcologne.dl.sourceforge.net/project/astyle/astyle/astyle%203.1/AStyle_3.1_windows.zip",
+                "url": "https://netcologne.dl.sourceforge.net/project/astyle/astyle/astyle%20${VERSION}/AStyle_${VERSION}_windows.zip",
                 "zipLocation": [
                     "AStyle",
                     "bin",
@@ -38,7 +39,7 @@
                     "value": "${OUTPUT_DIRECTORY}"
                 }
             ],
-            "name": "Astyle",
+            "name": "astyle",
             "outputDirectory": "${BIN_DIR}",
             "renameTo": "astyle.exe",
             "version": "3.1"
@@ -47,7 +48,7 @@
             "description": "cloc (Count Lines Of Code) counts, and computes differences of, comment lines, blank lines, and physical lines of source code in many programming languages.",
             "downloadInformation": {
                 "id": "DOWNLOAD_PROGRAM_DIRECTLY",
-                "url": "https://netcologne.dl.sourceforge.net/project/cloc/cloc/v1.64/cloc-1.64.exe"
+                "url": "https://sourceforge.net/projects/cloc/files/cloc/v${VERSION}/cloc-${VERSION}.exe"
             },
             "environmentVariables": [
                 {
@@ -65,7 +66,7 @@
             "description": "htop-like system-monitor for Windows with Vi-keybindings.",
             "downloadInformation": {
                 "id": "DOWNLOAD_PROGRAM_DIRECTLY",
-                "url": "https://github.com/gsass1/NTop/releases/download/v0.3.4/ntop.exe"
+                "url": "https://github.com/gsass1/NTop/releases/download/v${VERSION}/ntop.exe"
             },
             "environmentVariables": [
                 {
@@ -82,9 +83,8 @@
             "description": "A program to render SVG images to Cairo surfaces.",
             "downloadInformation": {
                 "id": "DOWNLOAD_PROGRAM_IN_ZIP",
-                "url": "https://github.com/miyako/console-rsvg-convert/releases/download/2.1/x64-static.zip",
+                "url": "https://github.com/miyako/console-rsvg-convert/releases/download/${VERSION}/rsvg-convert.x86_64.zip",
                 "zipLocation": [
-                    "x64-static",
                     "rsvg-convert.exe"
                 ]
             },
@@ -97,30 +97,13 @@
             ],
             "name": "rsvg-convert",
             "outputDirectory": "${BIN_DIR}",
-            "version": "2.1"
-        },
-        {
-            "description": "OpenCL info",
-            "downloadInformation": {
-                "id": "DOWNLOAD_PROGRAM_DIRECTLY",
-                "url": "https://ci.appveyor.com/api/projects/oblomov/clinfo/artifacts/clinfo.exe?job=platform%3a+x64"
-            },
-            "environmentVariables": [
-                {
-                    "append": true,
-                    "name": "PATH",
-                    "value": "${OUTPUT_DIRECTORY}"
-                }
-            ],
-            "name": "clinfo",
-            "outputDirectory": "${BIN_DIR}",
-            "version": "2.2.18"
+            "version": "2.1.3"
         },
         {
             "description": "A command-line fuzzy finder",
             "downloadInformation": {
                 "id": "DOWNLOAD_PROGRAM_IN_ZIP",
-                "url": "https://github.com/junegunn/fzf-bin/releases/download/0.21.1/fzf-0.21.1-windows_amd64.zip",
+                "url": "https://github.com/junegunn/fzf/releases/download/${VERSION}/fzf-${VERSION}-windows_amd64.zip",
                 "zipLocation": [
                     "fzf.exe"
                 ]
@@ -134,39 +117,14 @@
             ],
             "name": "fzf",
             "outputDirectory": "${BIN_DIR}",
-            "version": "0.21.1"
-        },
-        {
-            "archived": true,
-            "downloadInformation": {
-                "7zip": true,
-                "id": "DOWNLOAD_PROGRAM_IN_ZIP",
-                "url": "https://media.inkscape.org/dl/resources/file/inkscape-1.0-x64.7z",
-                "zipLocation": [
-                    "inkscape",
-                    "."
-                ]
-            },
-            "environmentVariables": [
-                {
-                    "append": true,
-                    "name": "PATH",
-                    "value": "${OUTPUT_DIRECTORY}\\bin"
-                }
-            ],
-            "isDirectory": true,
-            "name": "Inkscape",
-            "outputDirectory": "${PROGRAM_DIR}\\inkscape",
-            "version": "1.0"
+            "version": "0.38.0"
         },
         {
             "description": "PHP is a popular general-purpose scripting language that is especially suited to web development.",
             "downloadInformation": {
                 "id": "DOWNLOAD_PROGRAM_IN_ZIP",
-                "url": "https://windows.php.net/downloads/releases/php-7.4.6-Win32-vc15-x64.zip",
-                "zipLocation": [
-                    "."
-                ]
+                "url": "https://windows.php.net/downloads/releases/php-8.2.4-Win32-vs16-x64.zip",
+                "zipLocation": []
             },
             "environmentVariables": [
                 {
@@ -186,8 +144,7 @@
                 "id": "DOWNLOAD_PROGRAM_IN_ZIP",
                 "url": "https://github.com/pawelsalawa/sqlitestudio/releases/download/3.2.1/SQLiteStudio-3.2.1.zip",
                 "zipLocation": [
-                    "SQLiteStudio",
-                    "."
+                    "SQLiteStudio"
                 ]
             },
             "isDirectory": true,
@@ -210,46 +167,21 @@
         },
         {
             "downloadInformation": {
-                "7zip": true,
                 "id": "DOWNLOAD_PROGRAM_IN_ZIP",
-                "url": "https://netcologne.dl.sourceforge.net/project/mpv-player-windows/64bit/mpv-x86_64-20200531-git-102a083.7z",
-                "zipLocation": [
-                    "."
-                ]
-            },
-            "environmentVariables": [
-                {
-                    "append": true,
-                    "name": "PATH",
-                    "value": "${OUTPUT_DIRECTORY}"
-                }
-            ],
-            "isDirectory": true,
-            "name": "MPV video player",
-            "outputDirectory": "${PROGRAM_DIR}\\mpv"
-        },
-        {
-            "downloadInformation": {
-                "id": "DOWNLOAD_PROGRAM_IN_ZIP",
-                "url": "http://sdi-tool.org/releases/SDI_R2000.zip",
-                "zipLocation": [
-                    "."
-                ]
+                "url": "http://sdi-tool.org/releases/SDI_R${VERSION}.zip",
+                "zipLocation": []
             },
             "isDirectory": true,
             "name": "Snappy Driver Installer",
             "outputDirectory": "${PROGRAM_DIR}\\snappydriverinstaller",
-            "version": "2000"
+            "version": "2201"
         },
         {
             "description": "FFmpeg is the leading multimedia framework to decode, encode, transcode, mux, demux, stream, filter and play.",
             "downloadInformation": {
                 "id": "DOWNLOAD_PROGRAM_IN_ZIP",
-                "url": "https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-20200604-7f81785-win64-static.zip",
-                "zipLocation": [
-                    "ffmpeg-20200604-7f81785-win64-static",
-                    "."
-                ]
+                "url": "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2023-03-28-12-47/ffmpeg-n${VERSION}.zip",
+                "zipLocation": ["ffmpeg-n${VERSION}"]
             },
             "environmentVariables": [
                 {
@@ -259,18 +191,16 @@
                 }
             ],
             "isDirectory": true,
-            "name": "FFmpeg",
-            "outputDirectory": "${PROGRAM_DIR}\\ffmpeg",
-            "version": "20200604-7f81785"
+            "name": "ffmpeg",
+            "outputDirectory": "${PROGRAM_DIR}\\${NAME}",
+            "version": "6.0-11-g3980415627-win64-gpl-6.0"
         },
         {
             "description": "A simple tool for visually comparing two PDF files (diff-pdf --output-diff=diff.pdf a.pdf b.pdf)",
             "downloadInformation": {
                 "id": "DOWNLOAD_PROGRAM_IN_ZIP",
-                "url": "https://github.com/vslavik/diff-pdf/releases/download/v0.4.1/diff-pdf-win-0.4.1.zip",
-                "zipLocation": [
-                    "."
-                ]
+                "url": "https://github.com/vslavik/diff-pdf/releases/download/v${VERSION}/diff-pdf-win-${VERSION}.zip",
+                "zipLocation": []
             },
             "environmentVariables": [
                 {
@@ -282,15 +212,14 @@
             "isDirectory": true,
             "name": "diff-pdf",
             "outputDirectory": "${PROGRAM_DIR}\\diff_pdf",
-            "version": "0.4.1"
+            "version": "0.5"
         },
         {
             "downloadInformation": {
                 "id": "DOWNLOAD_PROGRAM_IN_ZIP",
-                "url": "https://downloads.apache.org/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.zip",
+                "url": "https://downloads.apache.org/maven/maven-3/${VERSION}/binaries/apache-maven-${VERSION}-bin.zip",
                 "zipLocation": [
-                    "apache-maven-3.6.3",
-                    "."
+                    "apache-maven-${VERSION}"
                 ]
             },
             "environmentVariables": [
@@ -301,17 +230,17 @@
                 }
             ],
             "isDirectory": true,
-            "name": "Apache Maven",
+            "name": "maven",
+            "displayName": "Apache Maven",
             "outputDirectory": "${PROGRAM_DIR}\\apache_maven",
-            "version": "3.6.3"
+            "version": "3.9.1"
         },
         {
             "downloadInformation": {
                 "id": "DOWNLOAD_PROGRAM_IN_ZIP",
-                "url": "https://services.gradle.org/distributions/gradle-6.5-bin.zip",
+                "url": "https://services.gradle.org/distributions/gradle-${VERSION}-bin.zip",
                 "zipLocation": [
-                    "gradle-6.5",
-                    "."
+                    "gradle-${VERSION}"
                 ]
             },
             "environmentVariables": [
@@ -323,18 +252,16 @@
             ],
             "renameTo": "",
             "isDirectory": true,
-            "name": "Gradle",
-            "outputDirectory": "${PROGRAM_DIR}\\gradle",
-            "version": "6.5"
+            "name": "gradle",
+            "outputDirectory": "${PROGRAM_DIR}\\${NAME}",
+            "version": "8.0.2"
         },
         {
             "description": "Display and control your Android device ",
             "downloadInformation": {
                 "id": "DOWNLOAD_PROGRAM_IN_ZIP",
-                "url": "https://github.com/Genymobile/scrcpy/releases/download/v1.14/scrcpy-win64-v1.14.zip",
-                "zipLocation": [
-                    "."
-                ]
+                "url": "https://github.com/Genymobile/scrcpy/releases/download/v${VERSION}/scrcpy-win64-v${VERSION}.zip",
+                "zipLocation": []
             },
             "environmentVariables": [
                 {
@@ -345,58 +272,18 @@
             ],
             "isDirectory": true,
             "name": "scrcpy",
-            "outputDirectory": "${PROGRAM_DIR}\\scrcpy",
-            "version": "1.14"
-        },
-        {
-            "downloadInformation": {
-                "id": "DOWNLOAD_PROGRAM_IN_ZIP",
-                "url": "https://download.java.net/java/GA/jdk14.0.1/664493ef4a6946b186ff29eb326336a2/7/GPL/openjdk-14.0.1_windows-x64_bin.zip",
-                "zipLocation": [
-                    "jdk-14.0.1",
-                    "."
-                ]
-            },
-            "environmentVariables": [
-                {
-                    "name": "JAVA_HOME",
-                    "system": true,
-                    "value": "${OUTPUT_DIRECTORY}\\bin"
-                },
-                {
-                    "append": true,
-                    "name": "PATH",
-                    "value": "%JAVA_HOME%\\bin"
-                }
-            ],
-            "isDirectory": true,
-            "name": "JAVA JDK 14",
-            "outputDirectory": "${PROGRAM_DIR}\\java_jdk_14",
-            "version": "14.0.1"
-        },
-        {
-            "downloadInformation": {
-                "id": "DOWNLOAD_PROGRAM_IN_ZIP",
-                "url": "https://download2.gluonhq.com/openjfx/14.0.1/openjfx-14.0.1_windows-x64_bin-sdk.zip",
-                "zipLocation": [
-                    "javafx-sdk-14.0.1",
-                    "."
-                ]
-            },
-            "isDirectory": true,
-            "name": "JAVA OpenJFX SKD 14",
-            "outputDirectory": "${PROGRAM_DIR}\\java_openjfx_jdk_14",
-            "version": "14.0.1"
+            "outputDirectory": "${PROGRAM_DIR}\\${NAME}",
+            "version": "2.0"
         }
     ],
     "variables": [
         {
             "name": "BIN_DIR",
-            "value": "C:\\Users\\nikla\\programs\\bin"
+            "value": "C:\\Users\\nikla\\ProgramsTest\\bin"
         },
         {
             "name": "PROGRAM_DIR",
-            "value": "C:\\Users\\nikla\\programs"
+            "value": "C:\\Users\\nikla\\ProgramsTest"
         }
     ]
 }

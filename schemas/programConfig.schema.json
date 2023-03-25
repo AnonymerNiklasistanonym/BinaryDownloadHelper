@@ -1,0 +1,61 @@
+{
+    "description": "A local programming configuration of installed programs.\nThis makes it able to remove and upgrade by storing program specific information.",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "description": "Pointer to the schema against which this document should be validated",
+            "type": "string"
+        },
+        "timeOfDownload": {
+            "type": "string"
+        },
+        "name": {
+            "description": "Program name",
+            "type": "string"
+        },
+        "environmentVariables": {
+            "description": "Environment variables based on this program location ('${OUTPUT_DIRECTORY}')",
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/EnvironmentVariable"
+            }
+        },
+        "version": {
+            "description": "Program version",
+            "type": "string"
+        }
+    },
+    "required": [
+        "name",
+        "timeOfDownload"
+    ],
+    "definitions": {
+        "EnvironmentVariable": {
+            "description": "System environment variable",
+            "type": "object",
+            "properties": {
+                "append": {
+                    "description": "Should the value appended if a variable with this name already exists",
+                    "type": "boolean"
+                },
+                "name": {
+                    "description": "Name of the system environment variable",
+                    "type": "string"
+                },
+                "system": {
+                    "description": "Should the system environment variable be created not on the user side but the system side",
+                    "type": "boolean"
+                },
+                "value": {
+                    "description": "Value of the system environment variable",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name",
+                "value"
+            ]
+        }
+    },
+    "$schema": "http://json-schema.org/draft-07/schema#"
+}

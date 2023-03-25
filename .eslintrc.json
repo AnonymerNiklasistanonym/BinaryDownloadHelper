@@ -1,0 +1,45 @@
+{
+    "env": {
+        "es6": true,
+        "node": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "prettier",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:jsdoc/recommended-typescript",
+        "plugin:prettier/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "project": [
+            "tsconfig.json",
+            "schemas/tsconfig.json"
+        ],
+        "sourceType": "module"
+    },
+    "plugins": [
+        "@typescript-eslint",
+        "jsdoc",
+        "prettier"
+    ],
+    "rules": {
+        "@typescript-eslint/no-misused-promises": ["error", { "ignoreVoid": true }],
+        "@typescript-eslint/no-floating-promises": "error",
+        "@typescript-eslint/no-unsafe-member-access": "error",
+        "@typescript-eslint/no-unsafe-assignment": "error",
+        "no-console": [ "error", { "allow": [ "warn", "error" ] } ],
+        "semi": ["error", "always"],
+        "sort-imports": [ "error", { "ignoreCase": true, "allowSeparatedGroups": true } ]
+    },
+    "settings": {
+        "jsdoc": {
+            "mode": "typescript",
+            "tagNamePreference": {
+                "arg": "param",
+                "return": "returns"
+            }
+        }
+    }
+}

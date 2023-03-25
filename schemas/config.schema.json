@@ -1,117 +1,35 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "additionalProperties": false,
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "description": "Pointer to the schema against which this document should be validated",
+            "type": "string"
+        },
+        "programs": {
+            "description": "Programs",
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/Program"
+            }
+        },
+        "variables": {
+            "description": "Variables",
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/Variable<string>"
+            }
+        }
+    },
+    "required": [
+        "programs"
+    ],
     "definitions": {
-        "downloadProgram": {
-            "additionalProperties": false,
-            "description": "Download program directly via URL",
-            "properties": {
-                "id": {
-                    "default": "DOWNLOAD_PROGRAM_DIRECTLY",
-                    "description": "Download type ID",
-                    "enum": [
-                        "DOWNLOAD_PROGRAM_DIRECTLY"
-                    ],
-                    "type": "string"
-                },
-                "url": {
-                    "default": "https://",
-                    "description": "Download url",
-                    "type": "string"
-                },
-                "urlHistory": {
-                    "description": "Previous download urls",
-                    "items": {
-                        "type": "string"
-                    },
-                    "type": "array"
-                }
-            },
-            "required": [
-                "id",
-                "url"
-            ]
-        },
-        "downloadProgramInZip": {
-            "additionalProperties": false,
-            "description": "Download ZIP file via URL and then extract program",
-            "properties": {
-                "7zip": {
-                    "default": false,
-                    "description": "Use 7zip for unpacking the ZIP file",
-                    "type": "boolean"
-                },
-                "id": {
-                    "default": "DOWNLOAD_PROGRAM_IN_ZIP",
-                    "description": "Download type ID",
-                    "enum": [
-                        "DOWNLOAD_PROGRAM_IN_ZIP"
-                    ],
-                    "type": "string"
-                },
-                "url": {
-                    "default": "https://",
-                    "description": "Download url",
-                    "type": "string"
-                },
-                "urlHistory": {
-                    "description": "Previous download urls",
-                    "items": {
-                        "type": "string"
-                    },
-                    "type": "array"
-                },
-                "zipLocation": {
-                    "description": "Location of EXE in ZIP file",
-                    "items": {
-                        "type": "string"
-                    },
-                    "type": "array"
-                }
-            },
-            "required": [
-                "id",
-                "url",
-                "zipLocation"
-            ]
-        },
-        "environmentVariable": {
-            "additionalProperties": false,
-            "description": "System environment variable",
-            "properties": {
-                "append": {
-                    "default": false,
-                    "description": "Should the value appended if a variable with this name already exists",
-                    "type": "boolean"
-                },
-                "name": {
-                    "default": "JAVA_HOME",
-                    "description": "Name of the system environment variable",
-                    "type": "string"
-                },
-                "system": {
-                    "default": false,
-                    "description": "Should the system environment variable be created not on the user side but the system side",
-                    "type": "boolean"
-                },
-                "value": {
-                    "default": "${OUTPUT_DIRECTORY}\\bin",
-                    "description": "Value of the system environment variable",
-                    "type": "string"
-                }
-            },
-            "required": [
-                "name",
-                "value"
-            ]
-        },
-        "program": {
-            "additionalProperties": false,
-            "description": "A program without an native installer",
+        "Program": {
+            "description": "A program (without a native installer)",
+            "type": "object",
             "properties": {
                 "archived": {
-                    "default": false,
-                    "description": "Declare program as archived and thus don't download it",
+                    "description": "Declare program as archived and thus don't download or upgrade it",
                     "type": "boolean"
                 },
                 "description": {
@@ -119,25 +37,24 @@
                     "type": "string"
                 },
                 "downloadInformation": {
+                    "description": "Information on how to download this program",
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/downloadProgram"
+                            "$ref": "#/definitions/DownloadProgram"
                         },
                         {
-                            "$ref": "#/definitions/downloadProgramInZip"
+                            "$ref": "#/definitions/DownloadProgramInZip"
                         }
-                    ],
-                    "description": "Download type of program"
+                    ]
                 },
                 "environmentVariables": {
                     "description": "Environment variables based on this program location ('${OUTPUT_DIRECTORY}')",
+                    "type": "array",
                     "items": {
-                        "$ref": "#/definitions/environmentVariable"
-                    },
-                    "type": "array"
+                        "$ref": "#/definitions/EnvironmentVariable"
+                    }
                 },
                 "isDirectory": {
-                    "default": false,
                     "description": "Declaring that this program is not just an executable but a whole directory",
                     "type": "boolean"
                 },
@@ -158,28 +75,115 @@
                     "type": "string"
                 },
                 "website": {
-                    "default": "https://",
                     "description": "The program website",
                     "type": "string"
                 }
             },
             "required": [
-                "name",
                 "downloadInformation",
+                "name",
                 "outputDirectory"
             ]
         },
-        "variable": {
-            "additionalProperties": false,
+        "DownloadProgram": {
+            "description": "Download program directly via URL",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Download type ID",
+                    "type": "string",
+                    "enum": [
+                        "DOWNLOAD_PROGRAM_DIRECTLY"
+                    ]
+                },
+                "url": {
+                    "description": "Download url",
+                    "type": "string"
+                },
+                "urlHistory": {
+                    "description": "Previous download urls",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "id",
+                "url"
+            ]
+        },
+        "DownloadProgramInZip": {
+            "description": "Download ZIP file via URL and then extract program",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Download type ID",
+                    "type": "string",
+                    "enum": [
+                        "DOWNLOAD_PROGRAM_IN_ZIP"
+                    ]
+                },
+                "url": {
+                    "description": "Download url",
+                    "type": "string"
+                },
+                "urlHistory": {
+                    "description": "Previous download urls",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "zipLocation": {
+                    "description": "Location of EXE in ZIP file",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "id",
+                "url",
+                "zipLocation"
+            ]
+        },
+        "EnvironmentVariable": {
+            "description": "System environment variable",
+            "type": "object",
+            "properties": {
+                "append": {
+                    "description": "Should the value appended if a variable with this name already exists",
+                    "type": "boolean"
+                },
+                "name": {
+                    "description": "Name of the system environment variable",
+                    "type": "string"
+                },
+                "system": {
+                    "description": "Should the system environment variable be created not on the user side but the system side",
+                    "type": "boolean"
+                },
+                "value": {
+                    "description": "Value of the system environment variable",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name",
+                "value"
+            ]
+        },
+        "Variable<string>": {
             "description": "Variable that will be replaced by a set value using ${VARIABLE_NAME} (supported by: 'renameTo', 'outputDirectory')",
+            "type": "object",
             "properties": {
                 "name": {
-                    "default": "VARIABLE_NAME",
                     "description": "Name of the variable that can be reused as ${VARIABLE_NAME}",
                     "type": "string"
                 },
                 "value": {
-                    "default": "path/to/somewhere",
                     "description": "Value of the variable",
                     "type": "string"
                 }
@@ -190,29 +194,5 @@
             ]
         }
     },
-    "properties": {
-        "$schema": {
-            "description": "Pointer to the schema against which this document should be validated",
-            "title": "Schema",
-            "type": "string"
-        },
-        "programs": {
-            "description": "Programs",
-            "items": {
-                "$ref": "#/definitions/program"
-            },
-            "type": "array"
-        },
-        "variables": {
-            "description": "Variables",
-            "items": {
-                "$ref": "#/definitions/variable"
-            },
-            "type": "array"
-        }
-    },
-    "required": [
-        "programs"
-    ],
-    "type": "object"
+    "$schema": "http://json-schema.org/draft-07/schema#"
 }
