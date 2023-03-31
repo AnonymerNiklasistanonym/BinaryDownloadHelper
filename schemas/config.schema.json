@@ -62,6 +62,10 @@
                     "description": "Program name",
                     "type": "string"
                 },
+                "displayName": {
+                    "description": "Custom display name",
+                    "type": "string"
+                },
                 "outputDirectory": {
                     "description": "The directory where the program should be moved to",
                     "type": "string"
@@ -82,7 +86,8 @@
             "required": [
                 "downloadInformation",
                 "name",
-                "outputDirectory"
+                "outputDirectory",
+                "version"
             ]
         },
         "DownloadProgram": {
@@ -136,7 +141,7 @@
                     }
                 },
                 "zipLocation": {
-                    "description": "Location of EXE in ZIP file",
+                    "description": "Custom location of EXE or directory in ZIP file",
                     "type": "array",
                     "items": {
                         "type": "string"
@@ -145,8 +150,7 @@
             },
             "required": [
                 "id",
-                "url",
-                "zipLocation"
+                "url"
             ]
         },
         "EnvironmentVariable": {

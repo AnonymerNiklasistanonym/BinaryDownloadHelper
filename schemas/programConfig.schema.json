@@ -27,7 +27,8 @@
     },
     "required": [
         "name",
-        "timeOfDownload"
+        "timeOfDownload",
+        "version"
     ],
     "definitions": {
         "EnvironmentVariable": {

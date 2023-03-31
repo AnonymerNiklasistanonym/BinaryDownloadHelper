@@ -3,6 +3,7 @@
     "programs": [
         {
             "description": "A command-line utility for retrieving files using HTTP, HTTPS and FTP protocols.",
+            "displayName": "GNU Wget (mingw32)",
             "downloadInformation": {
                 "id": "DOWNLOAD_PROGRAM_IN_ZIP",
                 "url": "https://eternallybored.org/misc/wget/releases/wget-${VERSION}-win64.zip",
@@ -18,7 +19,6 @@
                 }
             ],
             "name": "wget",
-            "displayName": "GNU Wget (mingw32)",
             "outputDirectory": "${BIN_DIR}",
             "version": "1.21.3"
         },
@@ -181,7 +181,9 @@
             "downloadInformation": {
                 "id": "DOWNLOAD_PROGRAM_IN_ZIP",
                 "url": "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2023-03-28-12-47/ffmpeg-n${VERSION}.zip",
-                "zipLocation": ["ffmpeg-n${VERSION}"]
+                "zipLocation": [
+                    "ffmpeg-n${VERSION}"
+                ]
             },
             "environmentVariables": [
                 {
@@ -215,6 +217,7 @@
             "version": "0.5"
         },
         {
+            "displayName": "Apache Maven",
             "downloadInformation": {
                 "id": "DOWNLOAD_PROGRAM_IN_ZIP",
                 "url": "https://downloads.apache.org/maven/maven-3/${VERSION}/binaries/apache-maven-${VERSION}-bin.zip",
@@ -231,7 +234,6 @@
             ],
             "isDirectory": true,
             "name": "maven",
-            "displayName": "Apache Maven",
             "outputDirectory": "${PROGRAM_DIR}\\apache_maven",
             "version": "3.9.1"
         },
@@ -250,10 +252,10 @@
                     "value": "${OUTPUT_DIRECTORY}\\bin"
                 }
             ],
-            "renameTo": "",
             "isDirectory": true,
             "name": "gradle",
             "outputDirectory": "${PROGRAM_DIR}\\${NAME}",
+            "renameTo": "",
             "version": "8.0.2"
         },
         {
@@ -274,16 +276,50 @@
             "name": "scrcpy",
             "outputDirectory": "${PROGRAM_DIR}\\${NAME}",
             "version": "2.0"
+        },
+        {
+            "downloadInformation": {
+                "id": "DOWNLOAD_PROGRAM_IN_ZIP",
+                "url": "https://github.com/${NAME}/${NAME}/releases/download/v${VERSION}/${NAME}.win-x64.zip"
+            },
+            "environmentVariables": [
+                {
+                    "append": true,
+                    "name": "PATH",
+                    "value": "${OUTPUT_DIRECTORY}"
+                }
+            ],
+            "isDirectory": true,
+            "name": "OpenTabletDriver",
+            "outputDirectory": "${PROGRAM_DIR}\\${NAME}",
+            "version": "0.6.0.4"
+        },
+        {
+            "downloadInformation": {
+                "id": "DOWNLOAD_PROGRAM_DIRECTLY",
+                "url": "https://github.com/robiot/${NAME}/releases/download/v${VERSION}/${NAME}.exe"
+            },
+            "environmentVariables": [
+                {
+                    "append": true,
+                    "name": "PATH",
+                    "value": "${OUTPUT_DIRECTORY}"
+                }
+            ],
+            "name": "AlphaClicker",
+            "outputDirectory": "${BIN_DIR}",
+            "renameTo": "alphaclicker.exe",
+            "version": "1.3.0"
         }
     ],
     "variables": [
         {
             "name": "BIN_DIR",
-            "value": "C:\\Users\\nikla\\ProgramsTest\\bin"
+            "value": "${PROGRAM_DIR}\\bin"
         },
         {
             "name": "PROGRAM_DIR",
-            "value": "C:\\Users\\nikla\\ProgramsTest"
+            "value": "${HOME}\\Programs"
         }
     ]
 }

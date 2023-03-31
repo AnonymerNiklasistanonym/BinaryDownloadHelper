@@ -13,6 +13,7 @@ import { listProgramCommand } from "./listProgram";
 import { name } from "../../package.json";
 import { readConfigFile } from "../commands/readConfig";
 import { removeProgramCommand } from "./removeProgram";
+import { replaceVariables } from "../macros";
 import { searchProgramCommand } from "./searchProgram";
 
 export interface CommandWorkerResult<COMMAND_DATA extends object> {
@@ -130,7 +131,12 @@ export const genericCommandRunner = async <
   );
   const variables =
     config.variables !== undefined
-      ? defaultVariables.concat(config.variables)
+      ? defaultVariables.concat(
+          config.variables.map((a) => ({
+            ...a,
+            value: replaceVariables(a.value, defaultVariables).processedString,
+          }))
+        )
       : defaultVariables;
   const workerFileDir = path.join(__dirname, "worker");
   switch (commandId) {

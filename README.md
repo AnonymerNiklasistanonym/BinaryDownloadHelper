@@ -10,87 +10,50 @@ You can tell this program to download programs without an installer or store ver
 {
     "downloadInformation": {
         "id": "DOWNLOAD_PROGRAM_IN_ZIP",
-        "url": "https://download.java.net/java/GA/jdk14.0.1/664493ef4a6946b186ff29eb326336a2/7/GPL/openjdk-14.0.1_windows-x64_bin.zip",
-        "zipLocation": [ "jdk-14.0.1", "." ]
+        "url": "https://netcologne.dl.sourceforge.net/project/astyle/astyle/astyle%20${VERSION}/AStyle_${VERSION}_windows.zip",
+        "zipLocation": [
+            "AStyle",
+            "bin",
+            "AStyle.exe"
+        ]
     },
-    "environmentVariables": [{
-        "name": "JAVA_HOME",
-        "system": true,
-        "value": "${OUTPUT_DIRECTORY}\\bin"
-    }, {
-        "append": true,
-        "name": "PATH",
-        "value": "%JAVA_HOME%\\bin"
-    }],
-    "isDirectory": true,
-    "name": "JAVA JDK 14",
-    "outputDirectory": "${PROGRAM_DIR}\\java_jdk_14",
-    "version": "14.0.1"
-}
-```
-
-```json
-"variables": [{
-    "name": "PROGRAM_DIR",
-    "value": "C:\\Users\\nikla\\programs"
-}]
-````
-
-This would for example download the JAVA OpenJDK into the directory `C:\Users\nikla\programs\java_jdk_14` and then tell you to set the environment variables `JAVA_HOME=C:\Users\nikla\programs\java_jdk_14` and extend `PATH` with `%JAVA_HOME%\bin`.
-
-- `"outputDirectory": "${PROGRAM_DIR}\\java_jdk_14"` references the user set variable `PROGRAM_DIR` with the value `C:\Users\nikla\programs` which then is resolved to `C:\Users\nikla\programs\java_jdk_14`
-  - For environment variables the variable `OUTPUT_DIRECTORY` (`${OUTPUT_DIRECTORY}`) resolves to the one of the resolved `"outputDirectory"`
-- `DOWNLOAD_PROGRAM_IN_ZIP` means that it downloads a `.zip` file from the internet - it is also possible to download files directly (check the provided [example file](./config.example.windows.json))
-  - `"zipLocation": [ "jdk-14.0.1", "." ]` means that after extracting the `.zip` file all files in the directory `jdk-14.0.1` are moved one directory up into the `outputDirectory`
-
-As soon as you would change for example the version attribute or the URL and run the script again the directory `C:\Users\nikla\programs\java_jdk_14` would be wiped and downloaded again.
-
-This also works for single executable files like `wget` for Windows:
-
-```json
-{
-    "description": "A command-line utility for retrieving files using HTTP, HTTPS and FTP protocols.",
-    "downloadInformation": {
-        "id": "DOWNLOAD_PROGRAM_IN_ZIP",
-        "url": "https://eternallybored.org/misc/wget/releases/wget-1.20.3-win64.zip",
-        "zipLocation": [ "wget.exe" ]
-    },
-    "environmentVariables": [{
-        "append": true,
-        "name": "PATH",
-        "value": "${OUTPUT_DIRECTORY}"
-    }],
-    "name": "GNU Wget (mingw32)",
+    "environmentVariables": [
+        {
+            "append": true,
+            "name": "PATH",
+            "value": "${OUTPUT_DIRECTORY}"
+        }
+    ],
+    "name": "astyle",
     "outputDirectory": "${BIN_DIR}",
-    "version": "1.20.3"
+    "renameTo": "astyle.exe",
+    "version": "3.1"
 }
 ```
 
 ```json
 "variables": [{
     "name": "BIN_DIR",
-    "value": "C:\\Users\\nikla\\programs\\bin"
+    "value": "${HOME}\\programs\bin"
 }]
-````
+```
 
-Single executable files like `clinfo` for Windows can also be downloaded directly:
+This would for example create the file `astyle.exe` by downloading a `.zip` file from the web which is then extracted and from which then the file `AStyle\bin\AStyle.exe` is moved and renamed to `$HOME\programs\bin\astyle.exe`.
 
-```json
-{
-    "description": "OpenCL info",
-    "downloadInformation": {
-        "id": "DOWNLOAD_PROGRAM_DIRECTLY",
-        "url": "https://ci.appveyor.com/api/projects/oblomov/clinfo/artifacts/clinfo.exe?job=platform%3a+x64"
-    },
-    "environmentVariables": [{
-        "append": true,
-        "name": "PATH",
-        "value": "${OUTPUT_DIRECTORY}"
-    }],
-    "name": "clinfo",
-    "outputDirectory": "${BIN_DIR}",
-    "version": "2.2.18"
-}
+This also works for executable files.
+
+## Examples
+
+An example to install:
+
+```sh
+npm run start -- -c config.example.windows.json install alphaclicker opentabletdriver astyle cloc rsvg-convert
+```
+
+An example to delete those files:
+
+```sh
+npm run start -- -c config.example.windows.json remove alphaclicker opentabletdriver astyle cloc rsvg-convert
 ```
 
 ## Setup
@@ -115,9 +78,9 @@ Single executable files like `clinfo` for Windows can also be downloaded directl
     # Optionally remove build dependencies
     npm prune --production
     # Run via npm
-    npm run start
+    npm run start -- # insert commands here
     # Run via node
-    node .
+    node . # insert commands here
     ```
 
 ## Config file
